@@ -24,9 +24,9 @@ using std::vector;
 using namespace std;
 using std::cout;
 using std::endl;
-using std::string;
+using std::string; 
 
-struct POINT
+struct POINT //3D Punkt
 {
     float x;
     float y;
@@ -34,7 +34,7 @@ struct POINT
     
 };
 
-struct FACE{
+struct FACE{ //Ebene (Dreieckig) mit normale (fürs rendern)
     POINT x;
     POINT y;
     POINT z;
@@ -49,121 +49,130 @@ struct FACE{
 /*
  * 
  */
-
+//Glob. Var zur Übernahme der Mausbewegung
 float x_mouse=0.0f,y_mouse=0.0f;
 int old_x_mouse=0, old_y_mouse=0;
-int width, height;
-float movefb=0.0f,moverl=0.0f;
-POINT LOOK = POINT();
-POINT cam_pos = POINT();
-float movecount=0.0f;
-float sens = 0.0007f;
-float mspeed = 0.01f;
 
-GLfloat light_position[] = {0.0, 0.0, 1.0, 0.0}; 
-void init();
-void reshape(int w, int h);
+    
+int width, height; //höhe und Breite Bildschirm
+
+
+float movefb=0.0f,moverl=0.0f; //Bewegungsrichtungsvariablen
+
+POINT LOOK = POINT();   //Punkt wo die Camera hinschaut
+
+POINT cam_pos = POINT(); // Position der Camera
+
+float movecount=0.0f; //?
+
+float sens = 0.0007f; //sensitivity maus
+
+float mspeed = 0.01f; //Drehgeschwindigkeit (maximal)
+
+GLfloat light_position[] = {0.0, 0.0, 1.0, 0.0}; //lichtposition
+
+void init(); //initialisiert Fenster, Opengl, und die Szene
+
+void reshape(int w, int h); //Wenn dass Fenster in seiner Form geändert wird passt die Funktion den Renderer daran an
+
 void keyboard(unsigned char Key, int x, int y);
-void render();
-void releaseKey(unsigned char key, int x, int y);
-vector<FACE> loadobj(string name);
+
+void render(); //renderschleife: Übernimmt Reinladen Von Objekten, Filtern etc. (+ verschiedenen Bufferleerungen usw.)
+
+void releaseKey(unsigned char key, int x, int y); //wenn keyboard key losgelassen wird
+
+vector<FACE> loadobj(string name); //lädt anhand Dateinamen eine .obj datei (nur die mit 3 punktigen faces)
 
 
-vector<FACE> objmap = loadobj("land.obj");
+vector<FACE> objmap = loadobj("land.obj"); //landschaft laden
 //vector<FACE> haus = loadobj("haus.obj");
 
 
-
+//initialiesierung und aufrufen des Mainloops
 int main(int argc, char** argv) {
-
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
-    
-
-    glutInitWindowSize(800, 600);
-    glutInitWindowPosition(0,0);
-    glutCreateWindow("game");
-    glutKeyboardUpFunc(releaseKey);
-    glutIgnoreKeyRepeat(1);
-    glutDisplayFunc(render);
-    glutIdleFunc(render);
-    glutReshapeFunc (reshape);
-    glutKeyboardFunc(keyboard);
+    glutInit(&argc, argv);//init opengl
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE); //was wollen wir wie ausgeben
+    glutInitWindowSize(800, 600); //fenstergröße
+    glutInitWindowPosition(0,0); //wo wird Fenster gespawnt
+    glutCreateWindow("game"); //Spawn window mit Name: "game"
+    glutKeyboardUpFunc(releaseKey); // anbinden der releaseKey an event wenn ein Key losgelassen wird
+    glutIgnoreKeyRepeat(1); //wenn eine taste gehalten wird: kein rumspammen (wie wenn du in word eine Taste gedrückt hältst--> das verhindern)
+    glutDisplayFunc(render); //renderfunktion anbinden
+    glutIdleFunc(render);// ||
+    glutReshapeFunc (reshape);//anbinden der reshape funktion
+    glutKeyboardFunc(keyboard);//Keyboard funktion anbinden
 
 
-    init();
-    glutMainLoop();
+    init();//initialisiereung
+    glutMainLoop(); //renderloop
     
     return 0;
 
 }
 void releaseKey(unsigned char key, int x, int y) { 	
 
-        switch (key) {
+        switch (key) {//wenn wasd Key losgelassen: jeweilige laufrichtungsvar wird genullt
              case 'w' :
-             
              case 's': movefb = 0.0f;break;
-                 case 'a':
+             
+             case 'a':
              case 'd' : moverl=0.0f;break;
         }
 } 
 void keyboard(unsigned char Key, int x, int y){
-    switch(Key){
+    
+    switch(Key){ //setzt für jedenen Key von wasd der gedrückt wird eine Richtungsvariable
         case 'w': movefb=1.0f;break;
-        case 's': movefb=-1.0f;break;
-        case 'a': moverl=-1.0f;break;
-        case 'd': moverl=1.0f;break;
         
+        case 's': movefb=-1.0f;break;
+        
+        case 'a': moverl=-1.0f;break;
+        
+        case 'd': moverl=1.0f;break;
     }
     
 
 }
 void mouse(int x, int y){
-   
-
-    
- 
-    
-
-    int cx = width/2;
+    int cx = width/2; //nimmt die Mauseingaben und formatiert sie auf das Fenster um
     int cy = height/2;
     if(x!=cx || y!=cy){
     x_mouse += (cx - x) * sens;
     y_mouse += (cy - y) * sens;
-    cout << x_mouse <<' ' << y_mouse << '\n';
+    cout << x_mouse <<' ' << y_mouse << '\n'; //print mauseingaben
     
     glutWarpPointer(cx, cy);
     }
    // render();
-
 }
 void init(void)
 {   
-    cam_pos.x = 0.0f;
+    cam_pos.x = 0.0f; //Cameraursprungsposition
     cam_pos.y = 0.0f;
     cam_pos.z = 5.0f;
  
-    glutPassiveMotionFunc(mouse);
-    glEnable(GLUT_MULTISAMPLE);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glEnable(GL_DEPTH_TEST);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glutPassiveMotionFunc(mouse); //mouse funktion einbinden
+    glEnable(GLUT_MULTISAMPLE);//multisample Antialising MSAA
+    glClearColor(0.0, 0.0, 0.0, 0.0); //Dspl clear
+    glEnable(GL_DEPTH_TEST);//Überprüfen des Rendervorgangs, (nach Fragmentshader) [dazu muss auch GLUT_DEPTH in DIsplay mode stehen]
+    
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); //"Hohe Grafikqualität" bei der Perspektivkorrektion 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     
-  GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* Red diffuse light. */
+  GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* Licht*/
   
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse); //Init Licht
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHTING);
-  glShadeModel(GL_SMOOTH);
+  glEnable(GL_LIGHT0);//Licht an
+  glEnable(GL_LIGHTING); //Lichtrendern an
+  glShadeModel(GL_SMOOTH); //smooth shading
   
 
   /* Setup the view of the cube. */
-  glMatrixMode(GL_PROJECTION);
+  glMatrixMode(GL_PROJECTION); //Viewmatrix setup
   
-  glutSetCursor(GLUT_CURSOR_NONE);
+  glutSetCursor(GLUT_CURSOR_NONE); //Mauszeiger verschwinden lassen
 }
 
 float rot =0.01;
@@ -189,25 +198,10 @@ void render(void)
     glVertex3f(-1.0f, 1.0f, 1.0f);
     glVertex3f(-1.0f, -1.0f, 1.0f);
     glVertex3f(1.0f, -1.0f, 1.0f);
-    
- 
- 
-    
-    
+
     glEnd();
-    
-    
-    
+
     glutSwapBuffers();
-    
-    
-
-
-
-
-
-
-
 
 }
 */
@@ -216,10 +210,10 @@ void render()
 {
    
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Bufferclearing
     
    // int randhaus[] = glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    glLoadIdentity(); //Identitymatrix laden (die mit diagonal 1en)
    // glTranslatef(0.0f ,0.0f,0.0f);
     
     POINT CNORM = POINT();
@@ -237,7 +231,7 @@ void render()
     //glRotatef(y_mouse, 0,0,1);
     //glRotatef(x_mouse, 0,1,0);
  
-    Rvec.x = - sin(x_mouse);
+    Rvec.x = - sin(x_mouse); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
     Rvec.y =   sin(y_mouse);
     Rvec.z = - cos(x_mouse);
     
@@ -279,23 +273,23 @@ void render()
     CNORM.z = 0.0f;
     
     //cout << '('<< LOOK.x<<',' << LOOK.y<< ','<< LOOK.z << ')' <<'\n';
-    gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, LOOK.x, LOOK.y, LOOK.z, CNORM.x, CNORM.y, CNORM.z);
+    gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, LOOK.x, LOOK.y, LOOK.z, CNORM.x, CNORM.y, CNORM.z); //Camera schaut jetzt zu diesem Punkt
     //glRotatef(old_x_mouse, 1.0, 0.0, 0.0);
     //glRotatef(old_y_mouse, 0.0, 1.0, 0.0);
-    glBegin(GL_TRIANGLES);
+    glBegin(GL_TRIANGLES); //Lass was zeichnen aber nur dreieckige poligone
     
    
-    for (auto face:objmap){
+    for (auto face:objmap){ //für jedes Face in meinem .obj Object
          
         //glColor3f(static_cast <float> (rand()) / static_cast <float> (RAND_MAX), static_cast <float> (rand()) / static_cast <float> (RAND_MAX), static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
         //glColor3f(1-abs(face.x.x),1-abs(face.y.x),1-abs(face.z.x));
         
-        glNormal3f(face.normal.x,face.normal.y, face.normal.z);
+        glNormal3f(face.normal.x,face.normal.y, face.normal.z); //Normal und die 3 punkte laden
         glVertex3f(face.x.x, face.x.y, face.x.z);
         glVertex3f(face.y.x, face.y.y, face.y.z);
         glVertex3f(face.z.x, face.z.y, face.z.z);
         const GLfloat mat[] = {0 , 0, 1, 1} ;
-        glMaterialfv( GL_FRONT,GL_DIFFUSE,mat);
+        glMaterialfv( GL_FRONT,GL_DIFFUSE,mat); //material bestimmen
        // if(randhaus==1){
        //   for (auto faces:haus){
          
@@ -313,15 +307,7 @@ void render()
         
       }
     
-    
-  
-    
-    
-    
-    
-    
-    
-    
+    //Ende des zeichenvorgangs
     glEnd();
     
     /*
@@ -336,20 +322,13 @@ void render()
         glEnd();
         
     */
-    glutSwapBuffers();
     
+    glutSwapBuffers(); //neuer buffer mit altem getauscht
     
-
-
-
-
-
-
-
 
 }
 
-void reshape(int w, int h)
+void reshape(int w, int h) //wird bei windowresize aufgerufen
 {
     glViewport (0, 0, w, h);
     width = w;
@@ -357,7 +336,6 @@ void reshape(int w, int h)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective(45.0f, (float)w/(float)h,1, 1000);
-    
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
 
@@ -366,6 +344,7 @@ void reshape(int w, int h)
  vector<FACE> loadobj(string name){
   string line;
   ifstream myfile (name);
+  
   if (myfile.is_open())
   {
       vector<POINT> vertices;

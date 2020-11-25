@@ -1,0 +1,1 @@
+//hier entsteht die camera Klasse
