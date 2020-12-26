@@ -24,13 +24,13 @@
 #include <math.h>
 
 #include <vector>
-
+#include "camera.h"
+#include "vector.h" 
 using std::vector;
 using namespace std;
 using std::cout;
 using std::endl;
 using std::string;
-
 struct POINT //3D Punkt
 {
     float x;
@@ -225,16 +225,6 @@ void render()
 
 
     POINT Rvec = POINT();
-    /*
-    glRotatef( rot, 1, 2, 1);
-    rot = rot+ 0.02;
-    if (rot >= 360)
-    {
-        rot=0;
-
-    }*/
-    //glRotatef(y_mouse, 0,0,1);
-    //glRotatef(x_mouse, 0,1,0);
 
     Rvec.x = - sin(x_mouse); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
     Rvec.y =   sin(y_mouse);

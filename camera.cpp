@@ -11,11 +11,11 @@
 
 #include <math.h>
 
-#include <vector>
+
 
 #include "camera.h"
 
-using std::vector;
+
 using namespace std;
 using std::cout;
 using std::endl;
@@ -34,40 +34,40 @@ struct POINT //3D Punkt
 
 };
 
-class camera {
-    private: 
-        POINT position;
-    private: 
-        matrix4 viewmatrix;
-    
-    public: 
-        camera(POINT startPos){
+
+
+
+camera::camera(vector startPos){
         this->position = startPos;
-    }
+    };
     
-    public: 
-        float getRendertexture();
+
+        float camera::getRendertexture(){
+            return 0.0;
+        }
     
-    public: 
-        POINT getPosition(){
+
+        vector camera::getPosition(){
         return this->position;
-    }
+    };
     
-    public: 
-        void setPosition(POINT newPos){
+
+    void camera::setPosition(vector newPos){
         this->position = newPos;
-    }
+    };
     
-    public: 
-        matrix4 getViewmatrix(){
+
+        mat4 camera::getViewmatrix(){
         return this->viewmatrix;
-    }
+    };
     
-    public: 
-        void setnewviewmatrix(matrix4 relativeviewmat){
+
+        void camera::setnewviewmatrix(mat4 relativeviewmat){
         this->viewmatrix= relativeviewmat;
-    }
+    };
     
-};
+
+    
+
 //Cameraclass
 

@@ -36,7 +36,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/camera.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/face.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/mat4.o \
+	${OBJECTDIR}/object3d.o \
+	${OBJECTDIR}/vector.o \
+	${OBJECTDIR}/vertice.o
 
 
 # C Compiler Flags
@@ -68,10 +73,35 @@ ${OBJECTDIR}/camera.o: camera.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/camera.o camera.cpp
 
+${OBJECTDIR}/face.o: face.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/face.o face.cpp
+
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/mat4.o: mat4.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mat4.o mat4.cpp
+
+${OBJECTDIR}/object3d.o: object3d.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object3d.o object3d.cpp
+
+${OBJECTDIR}/vector.o: vector.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vector.o vector.cpp
+
+${OBJECTDIR}/vertice.o: vertice.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vertice.o vertice.cpp
 
 # Subprojects
 .build-subprojects:
