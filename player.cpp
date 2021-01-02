@@ -18,7 +18,9 @@ player::player(int width, int height, double sensitivity) {
     this->width = width;
     this->sens = sensitivity;
 }
-
+void player::setPosition(double x, double y, double z){
+    position.set(x,y,z);
+}
 void player::renderMouseKeyboard(){
     
     vertice CNORM = vertice();

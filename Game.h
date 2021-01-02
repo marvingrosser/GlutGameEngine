@@ -23,6 +23,7 @@ public:
     Game(player spieler, szene scene);
     void render();
     void init();
+    void loadObjs();
 private:
     player spieler;
     szene scene;

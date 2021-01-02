@@ -24,6 +24,7 @@ public:
     void releaseKey(unsigned char key, int x, int y);
     void keyboard(unsigned char key, int x, int y);
     void reshape(int w, int h);
+    void setPosition(double x, double y, double z);
 private:
     double movecount;
     double movefb;

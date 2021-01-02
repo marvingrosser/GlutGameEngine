@@ -109,5 +109,7 @@ void object3d::readObj(string name){
 
 };
 
-
+object3d::object3d(string name){
+    this->readObj(name);
+}
 

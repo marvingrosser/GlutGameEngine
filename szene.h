@@ -14,9 +14,11 @@
 #ifndef SZENE_H
 #define SZENE_H
 #include <vector>
+#include <string>
 #include "object3d.h"
 #include "player.h"
 using std::vector;
+using std::string;
 
 class szene {
 public:
@@ -31,6 +33,9 @@ public:
     object3d getObjectByID(int id);
     
     vector<object3d> getObjects();
+    
+    void addObjFromFile(string name);
+    
 private:
     vector<object3d> objects;
     player spieler;

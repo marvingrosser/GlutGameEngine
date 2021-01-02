@@ -26,6 +26,7 @@ public:
     object3d();
     
     object3d(vector<face> faces);
+    object3d(string name);
     
     void addFace(face newface);
     

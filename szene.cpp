@@ -50,3 +50,8 @@ void szene::setPlayer(player spieler){
 player szene::getPlayer(){
     return spieler;
 }
+
+void szene::addObjFromFile(string name){
+    object3d obj = new object3d(name);
+    objects.push_back(obj);
+}
