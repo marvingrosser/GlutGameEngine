@@ -1,28 +1,29 @@
 #include "mat4.h"
-#include "vector.h"
+#include "vertice.h"
 
 #ifndef CAMERA_H
 #define CAMERA_H
 
 class camera {
-    private: 
-        vector position;
+    protected: 
+        vertice position;
 
         mat4 viewmatrix;
 
-        vector LOOK;
+        vertice LOOK;
     
     public: 
+        camera();
         camera(vector startPos);
     
 
         float getRendertexture();
     
 
-        vector getPosition();
+        vertice getPosition();
     
-
-        void setPosition(vector newPos);
+       
+        void setPosition(vertice newPos);
     
 
         mat4 getViewmatrix();

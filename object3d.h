@@ -33,6 +33,7 @@ public:
     
 private:
     vector<face> faces;
+    
 };
 
 #endif /* OBJECT3D_H */

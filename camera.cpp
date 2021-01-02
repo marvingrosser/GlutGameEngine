@@ -22,28 +22,21 @@ using std::endl;
 using std::string;
 
 
-struct matrix4{
-    float get[16];
-};
-
-struct POINT //3D Punkt
-{
-    float x;
-    float y;
-    float z;
-
-};
 
 
 
 
-camera::camera(vector startPos){
+camera::camera(){
+    this->position = new vertice();
+}   
+camera::camera(vertice startPos){
         this->position = startPos;
     };
     
 
         float camera::getRendertexture(){
             return 0.0;
+            
         }
     
 
@@ -52,7 +45,7 @@ camera::camera(vector startPos){
     };
     
 
-    void camera::setPosition(vector newPos){
+    void camera::setPosition(vertice newPos){
         this->position = newPos;
     };
     

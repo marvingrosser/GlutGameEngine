@@ -35,11 +35,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Game.o \
 	${OBJECTDIR}/camera.o \
 	${OBJECTDIR}/face.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mat4.o \
 	${OBJECTDIR}/object3d.o \
+	${OBJECTDIR}/player.o \
+	${OBJECTDIR}/szene.o \
 	${OBJECTDIR}/vector.o \
 	${OBJECTDIR}/vertice.o
 
@@ -68,6 +71,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/noneuclidian: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/noneuclidian ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/Game.o: Game.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Game.o Game.cpp
+
 ${OBJECTDIR}/camera.o: camera.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -92,6 +100,16 @@ ${OBJECTDIR}/object3d.o: object3d.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object3d.o object3d.cpp
+
+${OBJECTDIR}/player.o: player.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/player.o player.cpp
+
+${OBJECTDIR}/szene.o: szene.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/szene.o szene.cpp
 
 ${OBJECTDIR}/vector.o: vector.cpp
 	${MKDIR} -p ${OBJECTDIR}

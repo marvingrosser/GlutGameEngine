@@ -4,10 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Game.h</itemPath>
       <itemPath>camera.h</itemPath>
       <itemPath>face.h</itemPath>
       <itemPath>mat4.h</itemPath>
       <itemPath>object3d.h</itemPath>
+      <itemPath>player.h</itemPath>
+      <itemPath>szene.h</itemPath>
       <itemPath>vector.h</itemPath>
       <itemPath>vertice.h</itemPath>
     </logicalFolder>
@@ -18,11 +21,14 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Game.cpp</itemPath>
       <itemPath>camera.cpp</itemPath>
       <itemPath>face.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>mat4.cpp</itemPath>
       <itemPath>object3d.cpp</itemPath>
+      <itemPath>player.cpp</itemPath>
+      <itemPath>szene.cpp</itemPath>
       <itemPath>vector.cpp</itemPath>
       <itemPath>vertice.cpp</itemPath>
     </logicalFolder>
@@ -53,6 +59,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="camera.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="camera.h" ex="false" tool="3" flavor2="0">
@@ -70,6 +80,14 @@
       <item path="object3d.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="object3d.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="szene.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="szene.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vector.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -100,6 +118,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="camera.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="camera.h" ex="false" tool="3" flavor2="0">
@@ -117,6 +139,14 @@
       <item path="object3d.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="object3d.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="szene.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="szene.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vector.cpp" ex="false" tool="1" flavor2="0">
       </item>
