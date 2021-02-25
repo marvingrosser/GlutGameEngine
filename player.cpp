@@ -13,10 +13,17 @@
 
 #include "player.h"
 #include <GL/glut.h>
+#include<iostream>
+using namespace std;
+using std::cout;
+using std::endl;
+#include <math.h>
+
 player::player(int width, int height, double sensitivity) {
     this->height = height;
     this->width = width;
     this->sens = sensitivity;
+    this->mspeed=1.0f;
 }
 void player::setPosition(double x, double y, double z){
     position.set(x,y,z);
@@ -28,7 +35,7 @@ void player::renderMouseKeyboard(){
 
     Rvec.set(- sin(x_mouse), sin(y_mouse), - cos(x_mouse)); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
     
-    LOOK.set(cam_pos.x + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ());
+    LOOK.set(cam_pos.x + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ()); //an erster Stelle auch position.getX()  ??
     
     if(movefb==1.0f){
         position.set(position.getX() + Rvec.getX() * mspeed, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getZ() * mspeed);
@@ -61,7 +68,7 @@ void player::mouse(int x, int y){
     if(x!=cx || y!=cy){
         x_mouse += (cx - x) * sens;
         y_mouse += (cy - y) * sens;
-    cout << x_mouse <<' ' << y_mouse << '\n'; //print mauseingaben
+    cout << x_mouse <<' ' << y_mouse << endl; //print mauseingaben
     
     glutWarpPointer(cx, cy);
     }
@@ -94,8 +101,8 @@ void player::keyboard(unsigned char Key, int x, int y){
 void reshape(int w, int h) //wird bei windowresize aufgerufen
 {
     glViewport (0, 0, w, h);
-    width = w;
-    height = h;
+    //width = w;
+    //height = h;
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective(45.0f, (float)w/(float)h,1, 1000);
