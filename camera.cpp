@@ -27,7 +27,7 @@ using std::string;
 
 
 camera::camera(){
-    this->position = new vertice();
+    this->position = * new vertice();
 }   
 camera::camera(vertice startPos){
         this->position = startPos;
@@ -40,7 +40,7 @@ camera::camera(vertice startPos){
         }
     
 
-        vector camera::getPosition(){
+        vertice camera::getPosition(){
         return this->position;
     };
     

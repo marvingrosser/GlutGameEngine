@@ -17,13 +17,13 @@
 #include "vertice.h"
 class player : camera {
 public:
-    player(int width, int height);
-    player(vertice vert);
+    player(int width, int height, double sensitivity);
+    player();
     void renderMouseKeyboard();
-    void mouse(int x, int y);
-    void releaseKey(unsigned char key, int x, int y);
-    void keyboard(unsigned char key, int x, int y);
-    void reshape(int w, int h);
+    static void mouse(int x, int y);
+    static void releaseKey(unsigned char key, int x, int y);
+    static void keyboard(unsigned char key, int x, int y);
+    static void reshape(int w, int h);
     void setPosition(double x, double y, double z);
 private:
     double movecount;

@@ -113,3 +113,19 @@ object3d::object3d(string name){
     this->readObj(name);
 }
 
+void object3d::render(){
+    glBegin(GL_TRIANGLES);
+    for(auto face: this->faces){
+        
+        glNormal3f(face.getNormal().getX(),
+                    face.getNormal().getY(), 
+                    face.getNormal().getZ()); //Normal und die 3 punkte laden
+        
+        glVertex3f(face.getX().getX(), face.getX().getY(), face.getX().getZ());
+        glVertex3f(face.getY().getX(), face.getY().getY(), face.getY().getZ());
+        glVertex3f(face.getZ().getX(), face.getZ().getY(), face.getZ().getZ());
+        const GLfloat mat[] = {0 , 0, 1, 1} ;
+        glMaterialfv( GL_FRONT,GL_DIFFUSE,mat); //material bestimmen
+    }
+    glEnd();        
+}

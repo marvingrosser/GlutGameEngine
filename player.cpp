@@ -23,7 +23,14 @@ player::player(int width, int height, double sensitivity) {
     this->height = height;
     this->width = width;
     this->sens = sensitivity;
-    this->mspeed=1.0f;
+    setPosition(0,0,0);
+    //this->mspeed=1.0f;
+}
+player::player(){
+    this->height = 600;
+    this->width = 800;
+    this->sens = 1.0;
+    setPosition(0,0,0);
 }
 void player::setPosition(double x, double y, double z){
     position.set(x,y,z);
@@ -35,23 +42,23 @@ void player::renderMouseKeyboard(){
 
     Rvec.set(- sin(x_mouse), sin(y_mouse), - cos(x_mouse)); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
     
-    LOOK.set(cam_pos.x + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ()); //an erster Stelle auch position.getX()  ??
+    LOOK.set(position.getX() + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ()); //an erster Stelle auch position.getX()  ??
     
     if(movefb==1.0f){
-        position.set(position.getX() + Rvec.getX() * mspeed, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getZ() * mspeed);
+        position.set(position.getX() + Rvec.getX() * sens, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getZ() * sens);
         movecount += 0.0063f;
         
     }else if (movefb==-1.0f){
-        position.set(position.getX() - Rvec.getX() * mspeed, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getZ() * mspeed);
+        position.set(position.getX() - Rvec.getX() * sens, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getZ() * sens);
         movecount += 0.0043f;
         
     }
     if (moverl==1.0f){
-        position.set(position.getX() - Rvec.getZ() * mspeed, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getX() * mspeed);
+        position.set(position.getX() - Rvec.getZ() * sens, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getX() * sens);
         movecount += 0.0043f;
     }
     else if(moverl==-1.0f){
-        position.set(position.getX() + Rvec.getZ() * mspeed, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getX() * mspeed);
+        position.set(position.getX() + Rvec.getZ() * sens, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getX() * sens);
         movecount += 0.0043f;
     }
 
@@ -59,7 +66,7 @@ void player::renderMouseKeyboard(){
     
 
     //cout << '('<< LOOK.x<<',' << LOOK.y<< ','<< LOOK.z << ')' <<'\n';
-    gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, LOOK.getX(), LOOK.getY(), LOOK.getZ(), CNORM.getX(), CNORM.getY(), CNORM.getZ()); //Camera schaut jetzt zu diesem Punkt
+    gluLookAt(position.getX(), position.getY(), position.getZ(), LOOK.getX(), LOOK.getY(), LOOK.getZ(), CNORM.getX(), CNORM.getY(), CNORM.getZ()); //Camera schaut jetzt zu diesem Punkt
 
 }
 void player::mouse(int x, int y){

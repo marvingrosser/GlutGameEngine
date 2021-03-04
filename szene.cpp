@@ -37,12 +37,10 @@ vector<object3d> szene::getObjects(){
     return this->objects;
 };
 
-void szene::render(){
-    //Begin Triangles
-    
-    //Vertices angeben
-    
-    //End triangles
+static void szene::render(){
+    for(auto object: this->objects){
+        object.render();
+    }
 }
 void szene::setPlayer(player spieler){
     this->spieler = spieler;

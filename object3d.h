@@ -14,7 +14,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <GL/glut.h>
 using namespace std;
 using std::endl;
 using std::string;
@@ -31,6 +31,7 @@ public:
     void addFace(face newface);
     
     void readObj(string name);
+    void render();
     
 private:
     vector<face> faces;

@@ -14,7 +14,7 @@ class camera {
     
     public: 
         camera();
-        camera(vector startPos);
+        camera(vertice startPos);
     
 
         float getRendertexture();
