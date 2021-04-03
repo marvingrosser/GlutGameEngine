@@ -105,7 +105,7 @@ void player::keyboard(unsigned char Key, int x, int y){
 
 
 }
-void reshape(int w, int h) //wird bei windowresize aufgerufen
+void player::reshape(int w, int h) //wird bei windowresize aufgerufen
 {
     glViewport (0, 0, w, h);
     //width = w;

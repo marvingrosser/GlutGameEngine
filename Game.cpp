@@ -13,38 +13,51 @@
 
 #include "Game.h"
 //SPieler nur in scene!!!
+player Game::spieler{ * new player(800,600,0.002)};
+szene Game::scene{ * new szene()};
 Game::Game(){
-    this->spieler = * new player(800,600,1.0);
-    this->scene = * new szene();
+    Game::spieler = * new player(800,600,0.002);
+    Game::scene = * new szene();
 }
 Game::Game(player spieler, szene scene){
-    this->spieler = spieler;
-    this->scene = scene;
-    this->scene.setPlayer(this->spieler);
+    Game::spieler = spieler;
+    Game::scene = scene;
+    Game::scene.setPlayer(this->spieler);
 }
 void Game::loadObjs(){
-    scene.addObjFromFile("landscape.obj");
+    Game::scene.addObjFromFile("land.obj");
 }
-
+void Game::releaseKey(unsigned char key, int x, int y){
+    Game::spieler.releaseKey(key,x,y);
+}
+void Game::reshape(int w, int h){
+    Game::spieler.reshape(w,h);
+}
+void Game::keyboard(unsigned char key, int x, int y){
+    Game::spieler.keyboard(key,x,y);
+}
+void Game::mouse(int x, int y){
+    Game::spieler.mouse(x,y);
+}
 void Game::init(){
     int x=0;
-    char b = ' ';
-    //glutInit(&x,&&b);//init opengl
+    char *b = 0;
+    glutInit(&x,  & b);//init opengl
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE); //was wollen wir wie ausgeben
     glutInitWindowSize(800, 600); //fenstergröße
     glutInitWindowPosition(0,0); //wo wird Fenster gespawnt
     glutCreateWindow("game"); //Spawn window mit Name: "game"
-    glutKeyboardUpFunc(spieler.releaseKey); // anbinden der releaseKey an event wenn ein Key losgelassen wird
+    glutKeyboardUpFunc(Game::releaseKey); // anbinden der releaseKey an event wenn ein Key losgelassen wird
     glutIgnoreKeyRepeat(1); //wenn eine taste gehalten wird: kein rumspammen (wie wenn du in word eine Taste gedrückt hältst--> das verhindern)
-    glutDisplayFunc(scene.render); //renderfunktion anbinden
-    glutIdleFunc(scene.render);// ||
-    glutReshapeFunc (spieler.reshape);//anbinden der reshape funktion
-    glutKeyboardFunc(spieler.keyboard);//Keyboard funktion anbinden
+    glutDisplayFunc(Game::render); //renderfunktion anbinden
+    glutIdleFunc(Game::render);// ||
+    glutReshapeFunc (Game::reshape);//anbinden der reshape funktion
+    glutKeyboardFunc(Game::keyboard);//Keyboard funktion anbinden
     this->loadObjs();
     
-    spieler.setPosition(0.0,0.0,5.0) ;//Ursprungspos setzen
+    Game::spieler.setPosition(0.0,0.0,5.0) ;//Ursprungspos setzen
 
-    glutPassiveMotionFunc(spieler.mouse); //mouse funktion einbinden
+    glutPassiveMotionFunc(Game::mouse); //mouse funktion einbinden
     glEnable(GLUT_MULTISAMPLE);//multisample Antialising MSAA
     glClearColor(0.0, 0.0, 0.0, 0.0); //Dspl clear
     glEnable(GL_DEPTH_TEST);//Überprüfen des Rendervorgangs, (nach Fragmentshader) [dazu muss auch GLUT_DEPTH in DIsplay mode stehen]
@@ -53,7 +66,7 @@ void Game::init(){
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};  /* Licht*/
+    GLfloat light_diffuse[] = {1.0, 0.1, 1.0, 1.0};  /* Licht*/
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse); //Init Licht
     glEnable(GL_LIGHT0);//Licht an
@@ -70,6 +83,8 @@ void Game::init(){
 void Game::render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Bufferclearing
     glLoadIdentity(); //Identitymatrix laden (die mit diagonal 1en)
-    this->spieler.renderMouseKeyboard();
-    this->scene.render();
+    Game::spieler.renderMouseKeyboard();
+    Game::scene.render();
+    glutSwapBuffers();
+    
 }

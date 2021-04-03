@@ -14,7 +14,7 @@
 #include "szene.h"
 #include <vector>
 #include "object3d.h"
-
+#include <iostream>
 using std::vector;
 
 szene::szene() {
@@ -37,8 +37,9 @@ vector<object3d> szene::getObjects(){
     return this->objects;
 };
 
-static void szene::render(){
-    for(auto object: this->objects){
+void szene::render(){
+    for(auto object : this->objects){
+        
         object.render();
     }
 }
@@ -50,6 +51,6 @@ player szene::getPlayer(){
 }
 
 void szene::addObjFromFile(string name){
-    object3d obj = new object3d(name);
+    object3d obj = * new object3d(name);
     objects.push_back(obj);
 }

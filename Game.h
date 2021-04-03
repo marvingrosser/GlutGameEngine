@@ -17,16 +17,22 @@
 #include "szene.h"
 #include "player.h"
 #include "camera.h"
+
 class Game {
 public:
     Game();
     Game(player spieler, szene scene);
-    void render();
+    static void render();
     void init();
     void loadObjs();
+    static void releaseKey(unsigned char, int, int);
+    static void reshape( int, int);
+    static void keyboard( unsigned char, int, int);
+    static void mouse( int, int);
+    
 private:
-    player spieler;
-    szene scene;
+    static player spieler;
+    static szene scene;
 };
 
 #endif /* GAME_H */

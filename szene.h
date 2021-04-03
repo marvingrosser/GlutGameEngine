@@ -27,7 +27,7 @@ public:
     szene(object3d obj);
     
     szene(vector<object3d> objs);
-    static void render();
+    void render();
     player getPlayer();
     void setPlayer(player spieler);
     object3d getObjectByID(int id);
