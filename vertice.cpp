@@ -49,6 +49,15 @@ using namespace std;
         this->y = y;
         this->z = z;
     };
+    void vertice::setX(double x){
+        this->x=x;
+    }
+    void vertice::setY(double y){
+        this->y=y;
+    }
+    void vertice::setZ(double z){
+        this->z=z;
+    }
     double vertice::distance(vertice* vec){
         vertice sub = *this - *vec;
         return this->length(&sub);
@@ -84,6 +93,10 @@ using namespace std;
     double vertice::length(vertice* vec){
         return sqrt( pow(vec->x,2) + pow(vec->y,2) + pow(vec->z,2));
     };
+
+    string vertice::toString(){
+        return "("+to_string(this->getX())+","+to_string(this->getY())+","+to_string(this->getZ())+")";
+    }
 
 
 

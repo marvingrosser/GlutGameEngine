@@ -13,6 +13,7 @@
 
 #ifndef VETICE_H
 #define VETICE_H
+#include <string>
 
 class vertice {
 public:
@@ -29,6 +30,10 @@ public:
     double getZ();
     
     void set(double x, double y, double z);
+
+    void setX(double x);
+    void setY(double y);
+    void setZ(double z);
     
     double distance(vertice* vec);
     
@@ -45,6 +50,8 @@ public:
     void normalize();
     
     vertice normalizedGet();
+
+    std::string toString();
     
     
 private:

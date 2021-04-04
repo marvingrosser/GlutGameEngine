@@ -12,11 +12,13 @@
  */
 
 #include "Game.h"
+#include <iostream>
+
 //SPieler nur in scene!!!
-player Game::spieler{ * new player(800,600,0.002)};
+player Game::spieler{ * new player(800,600,0.002,0.05)};
 szene Game::scene{ * new szene()};
 Game::Game(){
-    Game::spieler = * new player(800,600,0.002);
+    Game::spieler = * new player(800,600,0.002,0.05);
     Game::scene = * new szene();
 }
 Game::Game(player spieler, szene scene){
@@ -83,6 +85,7 @@ void Game::init(){
 void Game::render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Bufferclearing
     glLoadIdentity(); //Identitymatrix laden (die mit diagonal 1en)
+    //std::cout<<"Pos: "<<Game::spieler.getPosition().toString()<<endl;
     Game::spieler.renderMouseKeyboard();
     Game::scene.render();
     glutSwapBuffers();

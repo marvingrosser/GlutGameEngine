@@ -17,19 +17,23 @@
 #include "vertice.h"
 class player : camera {
 public:
-    player(int width, int height, double sensitivity);
+    player(int width, int height, double sensitivity, double speed);
     player();
+    void renderMovement();
+    double getRealHeight();
     void renderMouseKeyboard();
     void mouse(int x, int y);
     void releaseKey(unsigned char key, int x, int y);
     void keyboard(unsigned char key, int x, int y);
     void reshape(int w, int h);
     void setPosition(double x, double y, double z);
+    vertice getPosition();
 private:
     double movecount;
     double movefb;
     double moverl;
     double sens;
+    double speed;
     int width;
     int height;
     double x_mouse;

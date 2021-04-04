@@ -114,6 +114,10 @@ object3d::object3d(string name){
     this->readObj(name);
 }
 
+object3d object3d::getFaces(){
+    return this->faces;
+}
+
 void object3d::render(){
     
     glBegin(GL_TRIANGLES);

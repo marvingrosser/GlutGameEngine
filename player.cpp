@@ -19,10 +19,11 @@ using std::cout;
 using std::endl;
 #include <math.h>
 
-player::player(int width, int height, double sensitivity) {
+player::player(int width, int height, double sensitivity, double speed) {
     this->height = height;
     this->width = width;
     this->sens = sensitivity;
+    this->speed=speed;
     setPosition(0,0,0);
     //this->mspeed=1.0f;
 }
@@ -30,11 +31,21 @@ player::player(){
     this->height = 600;
     this->width = 800;
     this->sens = 1.0;
+    this->speed=0.05;
     setPosition(0,0,0);
 }
 void player::setPosition(double x, double y, double z){
     position.set(x,y,z);
 }
+
+vertice player::getPosition(){
+    return position;
+}
+
+double player::getRealHeight(){
+    return 1.0;
+}
+
 void player::renderMouseKeyboard(){
     
     vertice CNORM = vertice();
@@ -42,28 +53,43 @@ void player::renderMouseKeyboard(){
 
     Rvec.set(- sin(x_mouse), sin(y_mouse), - cos(x_mouse)); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
     
-    LOOK.set(position.getX() + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ()); //an erster Stelle auch position.getX()  ??
-    
+    LOOK.set(position.getX() + Rvec.getX() , position.getY() + Rvec.getY(), position.getZ() + Rvec.getZ()); 
+
     if(movefb==1.0f){
-        position.set(position.getX() + Rvec.getX() * sens, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getZ() * sens);
-        movecount += 0.0063f;
+        //position.set(position.getX() + Rvec.getX() *speed, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getZ() *speed);
+        //movecount += 0.0063f; 
+        position.setX(position.getX()+Rvec.getX() *speed);
+        position.setZ(position.getZ() + Rvec.getZ() *speed);
+        
+
+        
         
     }else if (movefb==-1.0f){
-        position.set(position.getX() - Rvec.getX() * sens, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getZ() * sens);
-        movecount += 0.0043f;
+        //position.set(position.getX() - Rvec.getX() *speed, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getZ() *speed);
+        //movecount += 0.0043f;
+        position.setX(position.getX()-Rvec.getX() *speed);
+        position.setZ(position.getZ() - Rvec.getZ() *speed);
+       
+        
         
     }
     if (moverl==1.0f){
-        position.set(position.getX() - Rvec.getZ() * sens, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getX() * sens);
-        movecount += 0.0043f;
+        //position.set(position.getX() - Rvec.getZ() *speed, 1 + sin(movecount) * 0.07, position.getZ() + Rvec.getX() *speed);
+        //movecount += 0.0043f;
+        position.setX(position.getX() - Rvec.getZ() *speed);
+        position.setZ(position.getZ() + Rvec.getX() *speed);
+        
     }
     else if(moverl==-1.0f){
-        position.set(position.getX() + Rvec.getZ() * sens, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getX() * sens);
-        movecount += 0.0043f;
+        //position.set(position.getX() + Rvec.getZ() *speed, 1 + sin(movecount) * 0.07, position.getZ() - Rvec.getX() *speed);
+        //movecount += 0.0043f;
+        position.setX(position.getX() + Rvec.getZ() *speed);
+        position.setZ(position.getZ() - Rvec.getX() *speed);
+        
     }
 
     CNORM.set(0.0, 1.0, 0.0);
-    
+    position.setY(getRealHeight());
 
     //cout << '('<< LOOK.x<<',' << LOOK.y<< ','<< LOOK.z << ')' <<'\n';
     gluLookAt(position.getX(), position.getY(), position.getZ(), LOOK.getX(), LOOK.getY(), LOOK.getZ(), CNORM.getX(), CNORM.getY(), CNORM.getZ()); //Camera schaut jetzt zu diesem Punkt
@@ -72,9 +98,19 @@ void player::renderMouseKeyboard(){
 void player::mouse(int x, int y){
     int cx = width/2; //nimmt die Mauseingaben und formatiert sie auf das Fenster um
     int cy = height/2;
+
+    //hindert kamera am überdrehen und "flippen"
+    if (y_mouse>=0.9){
+        y_mouse=0.9;
+    }
+    if (y_mouse<=-0.9){
+        y_mouse=-0.9;
+    }
+
     if(x!=cx || y!=cy){
         x_mouse += (cx - x) * sens;
         y_mouse += (cy - y) * sens;
+
     cout << x_mouse <<' ' << y_mouse << endl; //print mauseingaben
     
     glutWarpPointer(cx, cy);
@@ -101,6 +137,9 @@ void player::keyboard(unsigned char Key, int x, int y){
         case 'a': moverl=-1.0f;break;
 
         case 'd': moverl=1.0f;break;
+
+        //spiel schließt bei "esc"
+        case 27: exit(0);
     }
 
 

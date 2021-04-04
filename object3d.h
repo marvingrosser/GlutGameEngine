@@ -32,6 +32,8 @@ public:
     
     void readObj(string name);
     void render();
+
+    object3d getFaces();
     
 private:
     vector<face> faces;
