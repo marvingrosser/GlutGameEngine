@@ -29,7 +29,7 @@ public:
     object3d(string name);
     
     void addFace(face newface);
-    bool playerInTriangle(vertice edges[3], vertice playerPosition);
+    void playerInTriangle(vertice edges[3], vertice playerPosition);
     void readObj(string name);
     void render(vertice playerPosition);
     double getPlayerHeight();

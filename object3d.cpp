@@ -134,7 +134,7 @@ vertice vectorMult(double mat[3][3],double v[3]){
 }
 
 
-bool object3d::playerInTriangle (vertice edges[3],vertice playerPosition){ //getter für höhe in dieser klasse?
+void object3d::playerInTriangle (vertice edges[3],vertice playerPosition){ //getter für höhe in dieser klasse?
     //Ax=b
     double b[3];
     b[0]=playerPosition.getX()-edges[0].getX();
@@ -172,11 +172,8 @@ bool object3d::playerInTriangle (vertice edges[3],vertice playerPosition){ //get
     vertice s=vectorMult(invA,b); //Lösungsvektor
     if (s.getX()<=1.2 && s.getX()>=-0.2 && s.getY()<=1.2 && s.getY()>=-0.2){//vielleicht anpassen
         playerHeight=edges[0].getY()+(edges[1].getY()-edges[0].getY())*s.getX()+(edges[2].getY()-edges[0].getY())*s.getY();
-        return true;
     }
-    else{ 
-        return false;
-    }
+
 
 
 }
@@ -204,9 +201,8 @@ void object3d::render(vertice playerPosition){
         edges[1].set(face.getY().getX(),face.getY().getY(),face.getY().getZ());
         edges[2].set(face.getZ().getX(),face.getZ().getY(),face.getZ().getZ());
 
-        if (playerInTriangle(edges,playerPosition)){
-            //cout<<"spieler gefunden"<<endl;
-        }
+    playerInTriangle(edges,playerPosition);
+
 
         const GLfloat mat[] = {0 , 1, 1, 1} ;
         glMaterialfv( GL_FRONT,GL_DIFFUSE,mat); //material bestimmen
