@@ -20,6 +20,7 @@ szene Game::scene{ * new szene()};
 Game::Game(){
     Game::spieler = * new player(800,600,0.002,0.05);
     Game::scene = * new szene();
+    Game::scene.setPlayer(this->spieler);
 }
 Game::Game(player spieler, szene scene){
     Game::spieler = spieler;
@@ -86,8 +87,11 @@ void Game::render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Bufferclearing
     glLoadIdentity(); //Identitymatrix laden (die mit diagonal 1en)
     //std::cout<<"Pos: "<<Game::spieler.getPosition().toString()<<endl;
+    
     Game::spieler.renderMouseKeyboard();
-    Game::scene.render();
+    Game::scene.render(Game::spieler.getPosition());
+    Game::spieler.setHeight(Game::scene.getPlayerHeight()+2.0);
+    
     glutSwapBuffers();
     
 }

@@ -42,9 +42,11 @@ vertice player::getPosition(){
     return position;
 }
 
-double player::getRealHeight(){
-    return 1.0;
+void player::setHeight(double y){
+    position.setY(y);
 }
+
+
 
 void player::renderMouseKeyboard(){
     
@@ -89,9 +91,9 @@ void player::renderMouseKeyboard(){
     }
 
     CNORM.set(0.0, 1.0, 0.0);
-    position.setY(getRealHeight());
+    
 
-    //cout << '('<< LOOK.x<<',' << LOOK.y<< ','<< LOOK.z << ')' <<'\n';
+    cout<<"Y: "<<position.getY() <<endl;
     gluLookAt(position.getX(), position.getY(), position.getZ(), LOOK.getX(), LOOK.getY(), LOOK.getZ(), CNORM.getX(), CNORM.getY(), CNORM.getZ()); //Camera schaut jetzt zu diesem Punkt
 
 }
@@ -99,7 +101,7 @@ void player::mouse(int x, int y){
     int cx = width/2; //nimmt die Mauseingaben und formatiert sie auf das Fenster um
     int cy = height/2;
 
-    //hindert kamera am überdrehen und "flippen"
+    //hindert kamera am überdrehen und "flippen" (noch nicht perfekt)
     if (y_mouse>=0.9){
         y_mouse=0.9;
     }
@@ -111,7 +113,7 @@ void player::mouse(int x, int y){
         x_mouse += (cx - x) * sens;
         y_mouse += (cy - y) * sens;
 
-    cout << x_mouse <<' ' << y_mouse << endl; //print mauseingaben
+    //cout << x_mouse <<' ' << y_mouse << endl; //print mauseingaben
     
     glutWarpPointer(cx, cy);
     }

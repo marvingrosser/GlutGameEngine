@@ -20,7 +20,7 @@ public:
     player(int width, int height, double sensitivity, double speed);
     player();
     void renderMovement();
-    double getRealHeight();
+    void setHeight(double y);
     void renderMouseKeyboard();
     void mouse(int x, int y);
     void releaseKey(unsigned char key, int x, int y);
@@ -28,6 +28,8 @@ public:
     void reshape(int w, int h);
     void setPosition(double x, double y, double z);
     vertice getPosition();
+    
+
 private:
     double movecount;
     double movefb;

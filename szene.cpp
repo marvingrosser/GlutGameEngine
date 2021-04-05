@@ -37,11 +37,19 @@ vector<object3d> szene::getObjects(){
     return this->objects;
 };
 
-void szene::render(){
-    for(auto object : this->objects){
+void szene::render(vertice playerPosition){
+    double h;
+    for(auto object : this->objects){ //unterschied reihenfolge geladener objekte für höhe
         
-        object.render();
+        object.render(playerPosition);
+        h=object.getPlayerHeight();
     }
+    this->spieler.setHeight(h);
+    cout<<"hallo"<<endl;
+}
+
+double szene::getPlayerHeight(){
+    return this->spieler.getPosition().getY();
 }
 void szene::setPlayer(player spieler){
     this->spieler = spieler;

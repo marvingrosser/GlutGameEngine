@@ -118,8 +118,76 @@ object3d object3d::getFaces(){
     return this->faces;
 }
 
-void object3d::render(){
-    
+double det3(double mat[3][3]){ //noch verkürzbar da 0
+    return mat[0][0]*mat[1][1]*mat[2][2]+mat[0][1]*mat[1][2]*mat[2][0]+mat[0][2]*mat[1][0]*mat[2][1]-mat[0][2]*mat[1][1]*mat[2][0]-mat[0][1]*mat[1][0]*mat[2][2]-mat[0][0]*mat[1][2]*mat[2][1];
+}
+
+double det2(double mat[2][2]){
+    return mat[0][0]*mat[1][1]-mat[0][1]*mat[1][0];
+
+}
+
+vertice vectorMult(double mat[3][3],double v[3]){
+    vertice b;
+    b.set(mat[0][0]*v[0]+mat[0][1]*v[1]+mat[0][2]*v[2],mat[1][0]*v[0]+mat[1][1]*v[1]+mat[1][2]*v[2],mat[2][0]*v[0]+mat[2][1]*v[1]+mat[2][2]*v[2]);
+    return b;
+}
+
+
+bool object3d::playerInTriangle (vertice edges[3],vertice playerPosition){ //getter für höhe in dieser klasse?
+    //Ax=b
+    double b[3];
+    b[0]=playerPosition.getX()-edges[0].getX();
+    b[1]=playerPosition.getY()-edges[0].getY();
+    b[2]=playerPosition.getZ()-edges[0].getZ();
+
+    double A[3][3];
+    A[0][0]=edges[1].getX()-edges[0].getX();
+    A[1][0]=edges[1].getY()-edges[0].getY();
+    A[2][0]=edges[1].getZ()-edges[0].getZ();
+    A[0][1]=edges[2].getX()-edges[0].getX();
+    A[1][1]=edges[2].getY()-edges[0].getY();
+    A[2][1]=edges[2].getZ()-edges[0].getZ();
+    A[0][2]=0;
+    A[1][2]=1;
+    A[2][2]=0;
+
+    double d=det3(A);
+
+    double invA[3][3]; 
+    if (d!=0){ 
+        invA[0][0]=(1/d)*(A[1][1]*A[2][2]-A[1][2]*A[2][1]);
+        invA[0][1]=(1/d)*(A[0][2]*A[2][1]-A[0][1]*A[2][2]);
+        invA[0][2]=(1/d)*(A[0][1]*A[1][2]-A[1][1]*A[0][2]);
+
+        invA[1][0]=(1/d)*(A[1][2]*A[2][0]-A[2][2]*A[1][0]);
+        invA[1][1]=(1/d)*(A[0][0]*A[2][2]-A[2][0]*A[0][2]);
+        invA[1][2]=(1/d)*(A[0][2]*A[1][0]-A[1][2]*A[0][0]);
+
+        invA[2][0]=(1/d)*(A[1][0]*A[2][1]-A[2][0]*A[1][1]);
+        invA[2][1]=(1/d)*(A[0][1]*A[2][0]-A[0][0]*A[2][1]);
+        invA[2][2]=(1/d)*(A[0][0]*A[1][1]-A[1][0]*A[0][1]);
+    }
+
+    vertice s=vectorMult(invA,b); //Lösungsvektor
+    if (s.getX()<=1.2 && s.getX()>=-0.2 && s.getY()<=1.2 && s.getY()>=-0.2){//vielleicht anpassen
+        playerHeight=edges[0].getY()+(edges[1].getY()-edges[0].getY())*s.getX()+(edges[2].getY()-edges[0].getY())*s.getY();
+        return true;
+    }
+    else{ 
+        return false;
+    }
+
+
+}
+
+double object3d::getPlayerHeight(){
+    return playerHeight;
+
+}
+
+void object3d::render(vertice playerPosition){
+    vertice edges[3];
     glBegin(GL_TRIANGLES);
     for(auto face: this->faces){
         
@@ -130,6 +198,16 @@ void object3d::render(){
         glVertex3f(face.getX().getX(), face.getX().getY(), face.getX().getZ());
         glVertex3f(face.getY().getX(), face.getY().getY(), face.getY().getZ());
         glVertex3f(face.getZ().getX(), face.getZ().getY(), face.getZ().getZ());
+
+        
+        edges[0].set(face.getX().getX(),face.getX().getY(),face.getX().getZ());
+        edges[1].set(face.getY().getX(),face.getY().getY(),face.getY().getZ());
+        edges[2].set(face.getZ().getX(),face.getZ().getY(),face.getZ().getZ());
+
+        if (playerInTriangle(edges,playerPosition)){
+            //cout<<"spieler gefunden"<<endl;
+        }
+
         const GLfloat mat[] = {0 , 1, 1, 1} ;
         glMaterialfv( GL_FRONT,GL_DIFFUSE,mat); //material bestimmen
     }

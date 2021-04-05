@@ -27,7 +27,7 @@ public:
     szene(object3d obj);
     
     szene(vector<object3d> objs);
-    void render();
+    void render(vertice playerPosition);
     player getPlayer();
     void setPlayer(player spieler);
     object3d getObjectByID(int id);
@@ -35,10 +35,12 @@ public:
     vector<object3d> getObjects();
     
     void addObjFromFile(string name);
+    double getPlayerHeight();
     
 private:
     vector<object3d> objects;
     player spieler;
+
 };
 
 #endif /* SZENE_H */
