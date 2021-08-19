@@ -1,0 +1,13 @@
+# Blender v2.93.2 OBJ File: ''
+# www.blender.org
+mtllib cubes.mtl
+o Cube
+v 0.5 0.5 0.0
+v 0.5 -0.5 0.0
+v -0.5 -0.5 0.0
+v -0.5 0.5 0.0
+
+f 1/30/3 2/36/3 4/31/3
+f 2/33/4 3/29/4 4/34/4
+
+

@@ -35,24 +35,25 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Game.o \
-	${OBJECTDIR}/camera.o \
-	${OBJECTDIR}/face.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/mat4.o \
-	${OBJECTDIR}/object3d.o \
-	${OBJECTDIR}/player.o \
-	${OBJECTDIR}/szene.o \
-	${OBJECTDIR}/vector.o \
-	${OBJECTDIR}/vertice.o
+	${OBJECTDIR}/src/classes/Face.o \
+	${OBJECTDIR}/src/classes/Game.o \
+	${OBJECTDIR}/src/classes/Shader.o \
+	${OBJECTDIR}/src/classes/Vector.o \
+	${OBJECTDIR}/src/classes/camera.o \
+	${OBJECTDIR}/src/classes/main.o \
+	${OBJECTDIR}/src/classes/mat4.o \
+	${OBJECTDIR}/src/classes/object3d.o \
+	${OBJECTDIR}/src/classes/player.o \
+	${OBJECTDIR}/src/classes/szene.o \
+	${OBJECTDIR}/src/classes/texture.o
 
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-lGL -lglut -lGLU -lGLEW
+CXXFLAGS=-lGL -lglut -lGLU -lGLEW
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -71,55 +72,60 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/noneuclidian: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/noneuclidian ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/Game.o: Game.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/Face.o: src/classes/Face.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Game.o Game.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/Face.o src/classes/Face.cpp
 
-${OBJECTDIR}/camera.o: camera.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/Game.o: src/classes/Game.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/camera.o camera.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/Game.o src/classes/Game.cpp
 
-${OBJECTDIR}/face.o: face.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/Shader.o: src/classes/Shader.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/face.o face.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/Shader.o src/classes/Shader.cpp
 
-${OBJECTDIR}/main.o: main.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/Vector.o: src/classes/Vector.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/Vector.o src/classes/Vector.cpp
 
-${OBJECTDIR}/mat4.o: mat4.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/camera.o: src/classes/camera.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mat4.o mat4.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/camera.o src/classes/camera.cpp
 
-${OBJECTDIR}/object3d.o: object3d.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/main.o: src/classes/main.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/object3d.o object3d.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/main.o src/classes/main.cpp
 
-${OBJECTDIR}/player.o: player.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/mat4.o: src/classes/mat4.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/player.o player.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/mat4.o src/classes/mat4.cpp
 
-${OBJECTDIR}/szene.o: szene.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/object3d.o: src/classes/object3d.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/szene.o szene.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/object3d.o src/classes/object3d.cpp
 
-${OBJECTDIR}/vector.o: vector.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/player.o: src/classes/player.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vector.o vector.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/player.o src/classes/player.cpp
 
-${OBJECTDIR}/vertice.o: vertice.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/classes/szene.o: src/classes/szene.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vertice.o vertice.cpp
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/szene.o src/classes/szene.cpp
+
+${OBJECTDIR}/src/classes/texture.o: src/classes/texture.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/classes
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/texture.o src/classes/texture.cpp
 
 # Subprojects
 .build-subprojects:

@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <logicalFolder name="HeaderFiles"
-                   displayName="Header Files"
-                   projectFiles="true">
-      <itemPath>Game.h</itemPath>
-      <itemPath>camera.h</itemPath>
-      <itemPath>face.h</itemPath>
-      <itemPath>mat4.h</itemPath>
-      <itemPath>object3d.h</itemPath>
-      <itemPath>player.h</itemPath>
-      <itemPath>szene.h</itemPath>
-      <itemPath>vector.h</itemPath>
-      <itemPath>vertice.h</itemPath>
+    <logicalFolder name="classes" displayName="classes" projectFiles="true">
+      <itemPath>src/classes/Face.cpp</itemPath>
+      <itemPath>src/classes/Game.cpp</itemPath>
+      <itemPath>src/classes/Shader.cpp</itemPath>
+      <itemPath>src/classes/Vector.cpp</itemPath>
+      <itemPath>src/classes/camera.cpp</itemPath>
+      <itemPath>src/classes/main.cpp</itemPath>
+      <itemPath>src/classes/mat4.cpp</itemPath>
+      <itemPath>src/classes/object3d.cpp</itemPath>
+      <itemPath>src/classes/player.cpp</itemPath>
+      <itemPath>src/classes/szene.cpp</itemPath>
+      <itemPath>src/classes/texture.cpp</itemPath>
     </logicalFolder>
-    <logicalFolder name="ResourceFiles"
-                   displayName="Resource Files"
-                   projectFiles="true">
-    </logicalFolder>
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
-      <itemPath>Game.cpp</itemPath>
-      <itemPath>camera.cpp</itemPath>
-      <itemPath>face.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
-      <itemPath>mat4.cpp</itemPath>
-      <itemPath>object3d.cpp</itemPath>
-      <itemPath>player.cpp</itemPath>
-      <itemPath>szene.cpp</itemPath>
-      <itemPath>vector.cpp</itemPath>
-      <itemPath>vertice.cpp</itemPath>
+    <logicalFolder name="headers" displayName="headers" projectFiles="true">
+      <itemPath>src/headers/Face.h</itemPath>
+      <itemPath>src/headers/Game.h</itemPath>
+      <itemPath>src/headers/Shader.h</itemPath>
+      <itemPath>src/headers/Vector.h</itemPath>
+      <itemPath>src/headers/camera.h</itemPath>
+      <itemPath>src/headers/mat4.h</itemPath>
+      <itemPath>src/headers/object3d.h</itemPath>
+      <itemPath>src/headers/player.h</itemPath>
+      <itemPath>src/headers/szene.h</itemPath>
+      <itemPath>src/headers/texture.h</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -44,6 +38,10 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>src/headers</Elem>
+    <Elem>src/classes</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -53,49 +51,76 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>src/classes</pElem>
+          </incDir>
+          <incFile>
+            <pElem>src/headers/Game.h</pElem>
+            <pElem>src/headers/camera.h</pElem>
+            <pElem>src/headers/Face.h</pElem>
+            <pElem>src/headers/mat4.h</pElem>
+            <pElem>src/headers/object3d.h</pElem>
+            <pElem>src/headers/player.h</pElem>
+            <pElem>src/headers/szene.h</pElem>
+            <pElem>src/headers/texture.h</pElem>
+            <pElem>src/headers/Vector.h</pElem>
+            <pElem>/usr/include/GL/freeglut.h</pElem>
+            <pElem>/usr/include/GL/gl.h</pElem>
+            <pElem>/usr/include/GL/glew.h</pElem>
+            <pElem>/usr/include/GL/glext.h</pElem>
+            <pElem>/usr/include/GL/glu.h</pElem>
+            <pElem>/usr/include/GL/glut.h</pElem>
+          </incFile>
+          <commandLine>-lGL -lglut -lGLU -lGLEW</commandLine>
+        </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>-lglut -lGLU -lGL</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/Face.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="camera.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/Shader.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="camera.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/Vector.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="face.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/camera.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="face.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/mat4.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mat4.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/object3d.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mat4.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/player.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="object3d.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/szene.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="object3d.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/texture.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="player.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/Face.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="player.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/Game.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="szene.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/Shader.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="szene.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/Vector.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vector.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/camera.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vector.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/mat4.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vertice.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/object3d.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vertice.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/szene.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/texture.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -118,43 +143,47 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/Face.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="camera.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/Shader.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="camera.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/Vector.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="face.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/camera.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="face.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/mat4.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mat4.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/object3d.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mat4.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/player.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="object3d.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/classes/szene.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="object3d.h" ex="false" tool="3" flavor2="0">
+      <item path="src/classes/texture.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="player.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/Face.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="player.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/Game.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="szene.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/Shader.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="szene.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/Vector.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vector.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/camera.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vector.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/mat4.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vertice.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/headers/object3d.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="vertice.h" ex="false" tool="3" flavor2="0">
+      <item path="src/headers/player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/szene.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/texture.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
