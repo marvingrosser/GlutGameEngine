@@ -53,6 +53,6 @@ player szene::getPlayer(){
 
 void szene::addObjFromFile(string name, string textureName){
     
-    object3d obj = * new object3d(name);
+    object3d obj = * new object3d(name,textureName);
     objects.push_back(obj);
 }

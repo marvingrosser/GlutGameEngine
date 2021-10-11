@@ -48,7 +48,7 @@ void player::renderMouseKeyboard(){
     CNORM.set(0.0, 1.0, 0.0);
         
     //Rvec.set(); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
-    cout << Rvec.to_string()<< endl;
+    //cout << Rvec.to_string()<< endl;
     
     this->calculateKeyboardmovement(&Rvec);
     
@@ -137,10 +137,10 @@ void player::calculateKeyboardmovement(Vector* direction){
 
 void player::calculateCamMovement(Vector* direction, Vector * CNORM){
     this->cam.setDirection(this->cam.getPosition().getX() + direction->getX() ,
-            this->cam.getPosition().getY() + direction->getY(),
-            this->cam.getPosition().getZ() + direction->getZ()); 
-            this->cam.setViewMatrix(glm::lookAt(this->cam.getPosition().get(),
-                        this->cam.getDirection().get(), 
-                        CNORM->get()));
+                            this->cam.getPosition().getY() + direction->getY(),
+                            this->cam.getPosition().getZ() + direction->getZ()); 
+    this->cam.setViewMatrix(glm::lookAt(this->cam.getPosition().get(),
+                            this->cam.getDirection().get(), 
+                            CNORM->get()));
 
 };

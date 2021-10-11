@@ -26,7 +26,7 @@ Game::Game(player spieler, szene scene){
     Game::scene.setPlayer(this->spieler);
 };
 void Game::loadObjs(){
-    Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/diffuse/stonefloor.bmp");
+    Game::scene.addObjFromFile("src/data/objects/cubetri.obj","src/data/textures/diffuse/stonefloor.bmp");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);
@@ -47,7 +47,7 @@ void Game::init(){
     char *b = 0;
     
     glutInit(&x,  & b);//init opengl
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE ); //was wollen wir wie ausgeben | GLUT_DEPTH | GLUT_MULTISAMPLE
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE); //was wollen wir wie ausgeben 
    
     //glutInitWindowSize(1920, 1080); //fenstergröße
     //glutInitWindowPosition(0,0); //wo wird Fenster gespawnt

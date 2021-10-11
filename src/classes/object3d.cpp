@@ -43,111 +43,60 @@ void object3d::addFace(Face newface){
     //this->faces.push_back(newface);
 };
 
-unsigned int * object3d::countinstances(string name){
 
-  string line;
-  ifstream overlook (name);
-  
-  int vertexcounter = 0;
-  int normalcounter = 0;
-  int facecounter = 0;
-  int texturecoordscounter = 0;
-  
-  if (overlook.is_open())
-  {
-    while ( getline (overlook,line) )
-    {
-        if(line.substr(0,line.rfind(' ', 3))=="v"){//vertices
-            vertexcounter++;
-            //std::cout << vertexcounter << std::endl;
-        }else if(line.substr(0, line.rfind(' ',3))=="vn"){//normals
-            
-            normalcounter++;
-            
-        }else if (line.substr(0, line.rfind(' ',3))=="f"){ //faceline
-            
-            facecounter++;
-
-        }else if(line.substr(0, line.rfind(' ',3))=="vt"){ //verticetexturecoordinates
-           
-            texturecoordscounter++;
-            
-            }
-        }
-        overlook.close();
-    }
-    else{
-        cout << "Unable to open file: " << name << std::endl;
-    } 
-  
-    
-    this->counts = new unsigned int[4];
-    this->counts[0] = vertexcounter;
-    this->counts[1] = normalcounter;
-    this->counts[2] = facecounter;
-    this->counts[3] = texturecoordscounter;
-    return this->counts;
-};
 void object3d::readObj(string name){
-  string line;  
-  unsigned int * counts = this->countinstances(name);
-  ifstream myfile (name);
   
-  std::cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-  std::cout << glGetString(GL_RENDERER) << std::endl;
-  std::cout << glGetString(GL_VERSION) << std::endl;
-  std::cout << "Number Verts:\t\t"<< counts[0]<< std::endl;
-  std::cout << "Number Normals:\t\t"<< counts[1]<< std::endl;
-  std::cout << "Number Faces:\t\t"<< counts[2]<< std::endl;
-  std::cout << "Number TextureCoords:\t\t"<< counts[3]<< std::endl;
-  this->vertexdata = new float[3*counts[0]];
-  this->facedata = new unsigned int[4*counts[2]];
-  if (myfile.is_open())
-  {
-      vector<Face> faces;
-      vector<Vector> normals;
-
-    while ( getline (myfile,line) )
-    {
-
-
-        if(line.substr(0,line.rfind(' ', 3))=="v"){//vertices
-
-            this->loadVectorFromString(line,vertices,&vertexdata[0]);
-            
-        }else if(line.substr(0, line.rfind(' ',3))=="vn"){//normals
-            
-            //this->loadVectorFromString(line,normals,&vertexdata[3*counts[0]]);
-            
-        }else if (line.substr(0, line.rfind(' ',3))=="f"){ //faceline
-            
-            this->loadFaceFromString(line,faces,vertices,normals, &facedata[0]);
-
-        }else if(line.substr(0, line.rfind(' ',3))=="vt"){ //verticetexturecoordinates
-           
-            //this->loadTextureCoordFromString(line);
-            
-        }
-
+    vector<Vector> vertices = object3d::getVerticesFromOBJ(name);
+    vector<Vector> normals = object3d::getNormalsFromOBJ(name);
+    vector<TexCoord> textureCoords = object3d::getTextureCoordsFromOBJ(name);
+    vector<LinearVertice> verticeCombinations = object3d::getVerticeCombinationsFromOBJ(name);
+    vector<LinearVertice> faceIndeces = object3d::getFaceIndecesFromOBJ(name);
+    
+    for(Vector vec:vertices){
+        std::cout << "vertices:" << std::endl;
+        std::cout << vec.to_string() << std::endl;
     }
-    myfile.close();
-
-
-
-
-
-      //this->faces = faces;
-      }
-
-  else{
-      cout << "Unable to open file: " << name << std::endl;
-  } 
-  
-
+    for(Vector norm:normals){
+        std::cout << "normals:" << std::endl;
+        std::cout << norm.to_string() << std::endl;
+    }
+    for(TexCoord t:textureCoords){
+        std::cout << "TexCoords:" << std::endl;
+        std::cout << t.x << ", "<< t.y << std::endl;
+    }
+    for(LinearVertice lin:verticeCombinations){
+        std::cout << "Combinations:" << std::endl;
+        std::cout << lin.vertIndex << " / " << lin.normalIndex << " / " << lin.texCoordIndex << " -:- " << lin.newLinearIndex<< std::endl;
+    }
+    for(LinearVertice lin:faceIndeces){
+        std::cout << "face:" << std::endl;
+        std::cout << lin.vertIndex << " / " << lin.normalIndex << " / " << lin.texCoordIndex << " -:- " << lin.newLinearIndex<< std::endl;
+    }
+    
+    
+    
+    this->fillVertexData(vertices,normals,textureCoords,verticeCombinations);
+    this->fillFaceIndexData(faceIndeces, verticeCombinations);
+    std::cout << "vertexdata:" << std::endl;
+    for(int i=0; i < this->vertexDataSize; i++){
+        std::cout << this->vertexdata[i] << std::endl;
+    }
+    std::cout << "facedata:" << std::endl;
+    for(int i=0; i < this->faceDataSize; i++){
+        std::cout << this->facedata[i] << std::endl;
+    }
+    std::cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+    std::cout << glGetString(GL_RENDERER) << std::endl;
+    std::cout << glGetString(GL_VERSION) << std::endl;
+    std::cout << "Number Verts:\t\t"<< vertices.size()<< std::endl;
+    std::cout << "Number Normals:\t\t"<< normals.size()<< std::endl;
+    std::cout << "Number Faces:\t\t"<< faceIndeces.size()<< std::endl;
+    std::cout << "Number TextureCoords:\t\t"<< textureCoords.size()<< std::endl;
+    std::cout << "Number Unique Vertex-Normal-TexCoord Combinations:\t"<<  this->vertexDataSize/8 << std::endl; 
 };
 
 object3d::object3d(string name){
-    
+    this->textureId = NULL;
     this->readObj(name);
     this->init();
     
@@ -156,8 +105,7 @@ object3d::object3d(string name){
 }
 void object3d::init(){
     
-    
-    std::cout << "Vertices"<< std::endl;
+       std::cout << "Vertices"<< std::endl;
     for(int i = 0; i < 10;i++){
         std::cout << "v(" << i+1 << "):\t\t(" << this->vertexdata[i*3]<< ", "<<this->vertexdata[i*3+1]<< ", " <<this->vertexdata[i*3+2]<< ")"<<std::endl;;
     }
@@ -166,8 +114,7 @@ void object3d::init(){
         std::cout << "f(" << i+1 << "):\t\t(" << this->facedata[i*3]<< ", "<<this->facedata[i*3+1]<< ", " <<this->facedata[i*3+2]<< ")"<<std::endl;;
     }
     
-    std::cout << sizeof(vertexdata) << std::endl;
-    std::cout << sizeof(facedata) << std::endl;
+    
     this->shader = *new Shader();
     this->shader.use();
     
@@ -181,38 +128,48 @@ void object3d::init(){
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     
-    
+    if(this->textureId != NULL){
+        glBindTexture(GL_TEXTURE_2D, *this->textureId);
+    }
     
     glBindVertexArray(VAO);
     
+    
     glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->counts[0]*sizeof(float)*3, this->vertexdata, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize *sizeof(float)*8, this->vertexdata, GL_STATIC_DRAW);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->counts[2]*sizeof(unsigned int)*3, this->facedata,GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int)*3, this->facedata,GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
+    
+    glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
+    
+    glVertexAttribPointer(2,2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));
+    glEnableVertexAttribArray(2);
     
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
     
-    
+ 
     
 };
 object3d::object3d(string name, string textureName){
     this->readObj(name);
+    
+    this->textureId = new GLuint;
+    new Texture(textureName, this->textureId );
+    glEnable(GL_TEXTURE_2D);
     this->init();
-    //this->textureId = new GLuint;
-    //new Texture(textureName, this->textureId );
-    //glEnable(GL_TEXTURE_2D);
     
 }
 GLuint object3d::getShader(){
     return this->shader.getID();
 };
 void object3d::render(){
-    //glBindTexture(GL_TEXTURE_2D, *this->textureId);
+    
     //std::cout << "render" << std::endl;
     
     this->shader.use();
@@ -220,9 +177,10 @@ void object3d::render(){
     
     glBindVertexArray(VAO);
     
-    glDrawElements(GL_TRIANGLES, this->counts[2]*3, GL_UNSIGNED_INT,(void*)0);
+    glDrawElements(GL_TRIANGLES, this->faceDataSize*3, GL_UNSIGNED_INT,(void*)(0));
     
     glBindVertexArray(0);
+    
     /*
     for(Face face: this->faces){
         Face *f = &face;
@@ -244,171 +202,245 @@ int object3d::countOccurences(char c, string& str){
     return count;
 };
 
-void object3d::loadVectorFromString(string& line, vector<Vector> &vectors, float *datapointer){
-            int l3 = line.rfind(' ');
-            int l2 = line.rfind(' ', l3-1);
-            int l1 = line.rfind(' ', l2-1);
 
-            float x = std::stof(line.substr(l1+1,l2-l1-1)) ;
-            float y = std::stof(line.substr(l2+1, l3-l2-1));
-            float z = std::stof(line.substr(l3+1, -1));
 
-            datapointer[3 * vectors.size() + 0] = x;
-            datapointer[3 * vectors.size() + 1] = y;
-            datapointer[3 * vectors.size() + 2] = z;
-            Vector punkt = Vector(& datapointer[3*vectors.size() + 0]);
-            //std::cout << punkt.to_string()<< std::endl;
-            vectors.push_back(punkt);
-};
-
-void object3d::loadFaceFromString(string& line, vector<Face>& faces, vector<Vector> &vertices , vector<Vector> &normals, unsigned * vertexdata){
-            
-            if(object3d::countOccurences(' ', line) == 4){
-                object3d::loadFace4FromString(line,faces,vertices,normals, vertexdata);
-            }else{
-                object3d::loadFace3FromString(line,faces,vertices,normals,vertexdata);
-            }
-            
-};
-
-void object3d::loadFace3FromString(string& line, vector<Face>& faces, vector<Vector>& vertices, vector<Vector>& normals, unsigned int * vertexdata){
-            Face newface;
-            int l3 = line.rfind(' ', line.rfind(' '));
-            int l2 = line.rfind(' ', l3 - 1);
-            int l1 = line.rfind(' ', l2 - 1);
-
-            string one = line.substr(l1 + 1, l2 - l1 - 1);
-            string two = line.substr(l2 + 1, l3 - l2 - 1);
-            string three = line.substr(l3+1, -1);
-            
-            int x_index = std::stoi(one.substr(0,one.find("/")))-1;
-            int y_index = std::stoi(two.substr(0,two.find("/")))-1;
-            int z_index = std::stoi(three.substr(0,three.find("/")))-1;
-            int normal_index = std::stoi(one.substr(one.find_last_of("/") + 1,-1)) -1;
-
-            //std::cout << "X: " << x_index << "\t Y: "<< y_index << "\t Z: " << z_index<< "\t Normal: " << normal_index << std::endl;
-            //std::cout << (( vertices[x_index])).to_string()<< std::endl;
-            
-            //set FaceIndexData
-            vertexdata[faces.size()*3 + 0] = x_index;
-            vertexdata[faces.size()*3 + 1] = y_index;
-            vertexdata[faces.size()*3 + 2] = z_index;
-            //vertexdata[faces.size()*4 + 3] = normal_index;
-            
-            
-            //set FaceObject
-            newface.setX(&( vertices[x_index]));
-            newface.setY(&(vertices[y_index]));
-            newface.setZ(&(vertices[z_index]));
-            //newface.setNormal(normals[normal_index]);
-            /*
-            int x_texture_coord = object3d::getTextureCoordFromString(one);
-            int y_texture_coord = object3d::getTextureCoordFromString(two);
-            int z_texture_coord = object3d::getTextureCoordFromString(three);
-            
-            if(x_texture_coord >=0 && y_texture_coord >=0 && z_texture_coord>=0){
-                object3d::assignTextureCoords( x_texture_coord,
-                    y_texture_coord,
-                    z_texture_coord,
-                    &newface);
-            }
+vector<LinearVertice> object3d::getFace3FromString(string line){
                 
-            */
-            
-            
-            faces.push_back(newface);
+        int l3 = line.rfind(' ', line.rfind(' '));      //find the the Spaces seperating the index Parts: "1/2/2 3/4/2 6/2/1 "
+        int l2 = line.rfind(' ', l3 - 1);
+        int l1 = line.rfind(' ', l2 - 1);
+        
+        string one = line.substr(l1 + 1, l2 - l1 - 1);  //Seperate the String with the Indeces from the Spaces: "1/2/2","3/4/2","6/2/2"
+        string two = line.substr(l2 + 1, l3 - l2 - 1);
+        string three = line.substr(l3+1, -1);
+        
+        LinearVertice x;
+        LinearVertice y;
+        LinearVertice z;
+        
+        x.vertIndex = std::stoi(one.substr(0,one.find("/")))-1; //take from each Substring the Vertex-Index-Part: 1,3,6
+        y.vertIndex = std::stoi(two.substr(0,two.find("/")))-1;
+        z.vertIndex = std::stoi(three.substr(0,three.find("/")))-1;
+        
+        x.normalIndex = std::stoi(one.substr(one.find_last_of("/") + 1,-1)) -1; //take from each substring the Normal-Index-Part: 2,2,2
+        y.normalIndex = std::stoi(two.substr(two.find_last_of("/") + 1,-1)) -1;
+        z.normalIndex = std::stoi(three.substr(three.find_last_of("/") + 1,-1)) -1;
+        
+        
+        x.texCoordIndex = std::stoi(one.substr(one.find("/") + 1, one.find_last_of("/") -1 ))-1; //take from each Substring the Text-Coord-Index Part: 2,4,2 
+        y.texCoordIndex = std::stoi(two.substr(two.find("/") + 1, two.find_last_of("/") -1 ))-1;
+        z.texCoordIndex = std::stoi(three.substr(three.find("/") + 1, three.find_last_of("/") -1 ))-1;
+        
+        vector<LinearVertice> face; 
+        face.push_back(x);
+        face.push_back(y);
+        face.push_back(z);
+                 
+        return face;      
+};
+vector<LinearVertice> object3d::getFace4FromString(string line){
+    
+    vector<LinearVertice> face = object3d::getFace3FromString(line);
+    
+    int l4 = line.find_last_of(' ');
+    
+    string four = line.substr(l4+1,-1);
+
+    LinearVertice fourth;
+
+    fourth.vertIndex = std::stoi(four.substr(0,four.find("/")))-1;
+    fourth.normalIndex = std::stoi(four.substr(four.find_last_of("/") + 1,-1)) -1;
+    fourth.texCoordIndex = std::stoi(four.substr(four.find("/") + 1, four.find_last_of("/") -1 ))-1;
+
+    face.push_back(fourth);
+
+    return face;
 };
 
-void object3d::loadFace4FromString(string& line, vector<Face>& faces, vector<Vector>& vertices, vector<Vector>& normals, unsigned int * vertexdata){
-            Face newface1;
-            Face newface2;
-            
-            int l3 = line.rfind(' ', line.rfind(' '));
-            int l2 = line.rfind(' ', l3 - 1);
-            int l1 = line.rfind(' ', l2 - 1);
-            int l0 = line.rfind(' ',l1 - 1);
-            
-            string zero = line.substr(l0 + 1, l1 - l0 - 1);
-            string one = line.substr(l1 + 1, l2 - l1 - 1);
-            string two = line.substr(l2 + 1, l3 - l2 - 1);
-            string three = line.substr(l3 + 1, -1);
+vector<string> object3d::getLinesWithAttributeFromOBJ(string name, string attribute){
+    string line;
+    ifstream file (name);
+    vector<string> lines;
 
-            int x_index = std::stoi(one.substr(0,one.find("/")))-1;
-            int y_index = std::stoi(two.substr(0,two.find("/")))-1;
-            int z_index = std::stoi(three.substr(0,three.find("/")))-1;
-            int w_index = std::stoi(zero.substr(0,zero.find("/")))-1;
+  
+    if (file.is_open()){
+        
+        while ( getline (file,line) ){
+        
+            if(line.substr(0,line.rfind(' ', 3))==attribute){//is Attribute at beginning?
+                lines.push_back(line);
+            }
             
-            int normal_index=std::stoi(one.substr(one.rfind("/") + 1, -1)) - 1;
-            /*
-            int x_texture_coord = object3d::getTextureCoordFromString(one);
-            int y_texture_coord = object3d::getTextureCoordFromString(two);
-            int z_texture_coord = object3d::getTextureCoordFromString(three);
-            int w_texture_coord = object3d::getTextureCoordFromString(zero);
-            
-            object3d::assignTextureCoords( x_texture_coord,
-                    y_texture_coord,
-                    z_texture_coord,
-                    &newface1);
-            
-            object3d::assignTextureCoords(x_texture_coord,
-                    w_texture_coord,
-                    z_texture_coord,
-                    &newface2);
-            std::cout << vertices[x_index].to_string()<< std::endl;
-              */
-            newface1.setX(&vertices[x_index]);
-            newface1.setY(&vertices[y_index]);
-            newface1.setZ(&vertices[z_index]);
-            //newface1.setNormal(normals[normal_index]);
-            
-            newface2.setX(&vertices[x_index]);
-            newface2.setY(&vertices[w_index]);
-            newface2.setZ(&vertices[z_index]);
-            //newface2.setNormal(normals[std::stoi(one.substr(one.rfind("/") + 1, -1)) - 1]);
-            vertexdata[faces.size()*3 + 0] = x_index;
-            vertexdata[faces.size()*3 + 1] = y_index;
-            vertexdata[faces.size()*3 + 2] = z_index;
-            faces.push_back(newface1);
-            vertexdata[faces.size()*3 + 0] = x_index;
-            vertexdata[faces.size()*3 + 1] = w_index;
-            vertexdata[faces.size()*3 + 2] = z_index;
-            faces.push_back(newface2);
-           
-};
-
-void object3d::loadTextureCoordFromString(string& line){
-    int second_ = line.rfind(' ', line.rfind(' '));
-    int first_  = line.rfind(' ', second_ - 1);
-    
-    
-    string second_d = line.substr(second_,-1);
-    string first_d = line.substr(first_,second_ -2);
-    
-    vector<double> textureCoord;
-    /*
-    textureCoord.push_back(std::stod(first_d));
-    textureCoord.push_back(std::stod(second_d));
-    this->textureCoord.push_back(textureCoord);*/
-};
-
-void object3d::assignTextureCoords(int coord_X, int coord_Y, int coord_Z, Face* face){
-    /*
-    face->setTextureCoord_X(this->textureCoord.at(coord_X));
-    face->setTextureCoord_Y(this->textureCoord.at(coord_Y));
-    face->setTextureCoord_Z(this->textureCoord.at(coord_Z)); 
-     */
-    
-};
-
-int object3d::getTextureCoordFromString(string& substring){
-    
-    int index_first =substring.find_first_of("/")+1;
-    int index_last =substring.find_last_of("/");
-    if(index_first == index_last){
-        return -1;
+        }
+        
+        file.close();
+        
     }
-    string coord = substring.substr(index_first, index_last -index_first);
-    std::cout <<"first: "<< index_first << "\tlast: "<< index_last << "\t coords: " << coord<< std::endl;
+    else{
+        cout << "Unable to open file: " << name << std::endl;
+    }
+    return lines;
+};
+
+Vector object3d::getVerticeFromString(string line){
+    int l3 = line.rfind(' ');
+    int l2 = line.rfind(' ', l3-1);
+    int l1 = line.rfind(' ', l2-1);
+
+    float x = std::stof(line.substr(l1+1,l2-l1-1)) ;
+    float y = std::stof(line.substr(l2+1, l3-l2-1));
+    float z = std::stof(line.substr(l3+1, -1));
+    Vector vec = *new Vector(x,y,z);
+    return vec;
+};
+
+vector<Vector> object3d::getVerticesFromOBJ(string name){
+    return object3d::getVectorObjectFromOBJ(name,"v");
+};
+
+vector<Vector> object3d::getNormalsFromOBJ(string name){
+    return object3d::getVectorObjectFromOBJ(name, "vn");
+};
+
+vector<Vector> object3d::getVectorObjectFromOBJ(string name, string attribute){
+    vector<string> lines = object3d::getLinesWithAttributeFromOBJ(name, attribute);
+    vector<Vector> vertices;
+    for(string line:lines){
+        vertices.push_back(object3d::getVerticeFromString(line));
+    }
+    return vertices;
+};
+TexCoord object3d::getTextureCoordFromString(string line){
     
-    return std::stoi(coord)-1;
-}
+    int l2 = line.rfind(' ');
+    int l1 = line.rfind(' ', l2-1);
+
+    float x = std::stof(line.substr(l1+1,l2-1)) ;
+    float y = std::stof(line.substr(l2+1, -1));
+    
+    TexCoord textureCoord = *new TexCoord();
+    
+    textureCoord.x = x;
+    textureCoord.y = y;
+    
+    return textureCoord;
+    
+};
+
+vector<TexCoord> object3d::getTextureCoordsFromOBJ(string name){
+    vector<string> lines = object3d::getLinesWithAttributeFromOBJ(name, "vt");
+    vector<TexCoord> textureCoords;
+    for(string line:lines){
+        textureCoords.push_back(object3d::getTextureCoordFromString(line));
+    }
+    return textureCoords;
+};
+vector<LinearVertice> object3d::getFaceFromString(string line){
+    vector<LinearVertice> face;
+    if(object3d::countOccurences(' ', line) == 4){
+        face = object3d::getFace4FromString(line);
+    }else{
+        face = object3d::getFace3FromString(line);       
+    }   
+    return face;
+    
+};
+bool object3d::hasCombination(vector<LinearVertice> combinations, LinearVertice newCombi){
+    for(LinearVertice combi:combinations){
+        if(combi.vertIndex == newCombi.vertIndex && 
+           combi.normalIndex== newCombi.normalIndex && 
+           combi.texCoordIndex == newCombi.texCoordIndex){
+            return true;            
+        }
+    }
+    return false;
+};
+
+vector<LinearVertice> object3d::getVerticeCombinationsFromOBJ(string name){
+    vector<string> lines = object3d::getLinesWithAttributeFromOBJ(name, "f"); 
+    vector<LinearVertice> vertexCombinations;
+    for(string line:lines){
+        
+        vector<LinearVertice> face = object3d::getFaceFromString(line);
+        
+        
+        
+        for(LinearVertice vertexCombi: face){
+        
+            if(!object3d::hasCombination(vertexCombinations, vertexCombi)){
+            
+                vertexCombinations.push_back(vertexCombi);
+            
+            }
+        }
+    }
+    
+    return object3d::linearizeIndeces(vertexCombinations);
+};
+
+vector<LinearVertice> object3d::linearizeIndeces(vector<LinearVertice> combinations){
+    bool found= true;
+    int vertexIndex = -1;
+    int lastWroteIndex = -1;
+    while(found){
+        vertexIndex++;
+        found = false;
+        for(int i = 0; i < combinations.size();i++){
+            if(combinations.at(i).vertIndex == vertexIndex){
+                combinations.at(i).newLinearIndex = lastWroteIndex + 1;
+                lastWroteIndex++;
+                found = true;
+            }
+        }
+    }
+    
+    return combinations;
+};
+vector<LinearVertice> object3d::getFaceIndecesFromOBJ(string name){
+    vector<string> lines = object3d::getLinesWithAttributeFromOBJ(name, "f"); 
+    vector<LinearVertice> vertexCombinations;
+    for(string line:lines){
+        
+        vector<LinearVertice> face = object3d::getFaceFromString(line);
+        vertexCombinations.push_back(face.at(0));
+        vertexCombinations.push_back(face.at(1));
+        vertexCombinations.push_back(face.at(2));
+        if(face.size()==4){
+            vertexCombinations.push_back(face.at(1));
+            vertexCombinations.push_back(face.at(2));
+            vertexCombinations.push_back(face.at(3));
+        }
+                    
+    }
+    return vertexCombinations;
+};
+
+void object3d::fillVertexData(vector<Vector> vertices, vector<Vector> normals, vector<TexCoord> textureCoords, vector<LinearVertice> combinations){
+    this->vertexdata = new float[combinations.size()*8];
+    this->vertexDataSize = combinations.size();
+    for(LinearVertice combi:combinations){
+        this->vertexdata[combi.newLinearIndex*8 + 0] = vertices.at(combi.vertIndex).getX();
+        this->vertexdata[combi.newLinearIndex*8 + 1] = vertices.at(combi.vertIndex).getY();
+        this->vertexdata[combi.newLinearIndex*8 + 2] = vertices.at(combi.vertIndex).getZ();
+        this->vertexdata[combi.newLinearIndex*8 + 3] = normals.at(combi.normalIndex).getX();
+        this->vertexdata[combi.newLinearIndex*8 + 4] = normals.at(combi.normalIndex).getY();
+        this->vertexdata[combi.newLinearIndex*8 + 5] = normals.at(combi.normalIndex).getZ();
+        this->vertexdata[combi.newLinearIndex*8 + 6] = textureCoords.at(combi.texCoordIndex).x;
+        this->vertexdata[combi.newLinearIndex*8 + 7] = textureCoords.at(combi.texCoordIndex).y;
+    }
+};
+
+void object3d::fillFaceIndexData(vector<LinearVertice> faces, vector<LinearVertice> combinations){
+    this->facedata = new unsigned int[faces.size()];
+    this->faceDataSize = faces.size();
+    for(int j = 0; j < faces.size(); j++){
+        for(int i = 0; i < combinations.size(); i++){
+            if(faces.at(j).vertIndex == combinations.at(i).vertIndex &&
+               faces.at(j).normalIndex == combinations.at(i).normalIndex &&
+               faces.at(j).texCoordIndex == combinations.at(i).texCoordIndex){
+                this->facedata[j] = combinations.at(i).newLinearIndex;
+                
+            }
+        }
+    }
+};

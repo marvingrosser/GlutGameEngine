@@ -20,19 +20,25 @@ GLuint Shader::getID(){
 Shader::Shader(){
     char * vs = (char*) "#version 460 core\n "
     "layout (location = 0) in vec3 aPos;\n"
+    "layout (location = 1) in vec3 aNormal;\n"
+    "layout (location = 2) in vec2 aTexCoord;\n"
     "uniform mat4 model;\n"
     "uniform mat4 view;\n"
     "uniform mat4 projection;\n"
+    "out vec2 TexCoord;\n"
     "void main()\n"
     "{\n"
-    "gl_Position = projection * view *model * vec4(aPos, 1.0f);\n"
+    "gl_Position = projection * view * model * vec4(aPos, 1.0f);\n"
+    "TexCoord = aTexCoord;"
     "}\n\0";
 
     char * fs = (char *)"#version 460 core\n"
         "out vec4 FragColor;\n"
+        "in vec2 TexCoord;\n"
+        "uniform sampler2D DiffTexture;\n"
         "void main()\n"
         "{\n"
-        " FragColor = vec4(0.4f, 0.5f, 0.2f, 0.5f);\n"
+        " FragColor = texture(DiffTexture, TexCoord);\n"
         " }\n\0";
    this->createShader(fs,vs);
 };
