@@ -242,10 +242,10 @@ vector<LinearVertice> object3d::getFace4FromString(string line){
     
     vector<LinearVertice> face = object3d::getFace3FromString(line);
     
-    int l4 = line.find_last_of(' ');
+    int l4_1 = line.find(' ');
+    int l4_2 = line.find(' ', line.find(' ')+1);
+    string four = line.substr(l4_1+1,l4_2-1);
     
-    string four = line.substr(l4+1,-1);
-
     LinearVertice fourth;
 
     fourth.vertIndex = std::stoi(four.substr(0,four.find("/")))-1;
@@ -406,7 +406,7 @@ vector<LinearVertice> object3d::getFaceIndecesFromOBJ(string name){
         vertexCombinations.push_back(face.at(1));
         vertexCombinations.push_back(face.at(2));
         if(face.size()==4){
-            vertexCombinations.push_back(face.at(1));
+            vertexCombinations.push_back(face.at(0));
             vertexCombinations.push_back(face.at(2));
             vertexCombinations.push_back(face.at(3));
         }
