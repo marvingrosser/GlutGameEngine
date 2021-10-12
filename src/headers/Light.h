@@ -13,14 +13,16 @@
 
 #ifndef LIGHT_H
 #define LIGHT_H
+#include "Vector.h"
 
 class Light {
 public:
-    Light();
+    Light(Vector position, Vector color);
     Light(const Light& orig);
     virtual ~Light();
 private:
-
+    Vector position;
+    Vector color;
 };
 
 #endif /* LIGHT_H */

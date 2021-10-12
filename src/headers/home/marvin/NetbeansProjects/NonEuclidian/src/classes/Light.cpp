@@ -13,7 +13,9 @@
 
 #include "../headers/Light.h"
 
-Light::Light() {
+Light::Light(Vector position, Vector color) {
+    this->position = position;
+    this->color = color;
 }
 
 Light::Light(const Light& orig) {
