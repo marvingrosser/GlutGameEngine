@@ -45,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/classes/object3d.o \
 	${OBJECTDIR}/src/classes/player.o \
 	${OBJECTDIR}/src/classes/szene.o \
-	${OBJECTDIR}/src/classes/texture.o
+	${OBJECTDIR}/src/classes/texture.o \
+	${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o
 
 
 # C Compiler Flags
@@ -126,6 +127,11 @@ ${OBJECTDIR}/src/classes/texture.o: src/classes/texture.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/texture.o src/classes/texture.cpp
+
+${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o: src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp
 
 # Subprojects
 .build-subprojects:

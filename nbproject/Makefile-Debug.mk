@@ -45,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/classes/object3d.o \
 	${OBJECTDIR}/src/classes/player.o \
 	${OBJECTDIR}/src/classes/szene.o \
-	${OBJECTDIR}/src/classes/texture.o
+	${OBJECTDIR}/src/classes/texture.o \
+	${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o
 
 
 # C Compiler Flags
@@ -126,6 +127,11 @@ ${OBJECTDIR}/src/classes/texture.o: src/classes/texture.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/classes
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/classes/texture.o src/classes/texture.cpp
+
+${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o: src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Isrc/classes -include src/headers/Game.h -include src/headers/camera.h -include src/headers/Face.h -include src/headers/mat4.h -include src/headers/object3d.h -include src/headers/player.h -include src/headers/szene.h -include src/headers/texture.h -include src/headers/Vector.h -include /usr/include/GL/freeglut.h -include /usr/include/GL/gl.h -include /usr/include/GL/glew.h -include /usr/include/GL/glext.h -include /usr/include/GL/glu.h -include /usr/include/GL/glut.h -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.o src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp
 
 # Subprojects
 .build-subprojects:

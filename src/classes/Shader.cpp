@@ -26,19 +26,29 @@ Shader::Shader(){
     "uniform mat4 view;\n"
     "uniform mat4 projection;\n"
     "out vec2 TexCoord;\n"
+    "out vec3 Normal;\n"
+    "out vec3 FragPos;\n"
     "void main()\n"
     "{\n"
     "gl_Position = projection * view * model * vec4(aPos, 1.0f);\n"
-    "TexCoord = aTexCoord;"
+    "TexCoord = aTexCoord;\n"
+    "Normal = aNormal;\n"
+    "FragPos = vec3(model * vec4(aPos, 1.0f));\n"
     "}\n\0";
 
     char * fs = (char *)"#version 460 core\n"
         "out vec4 FragColor;\n"
         "in vec2 TexCoord;\n"
+        "in vec3 Normal;\n"
+        "in vec3 FragPos;\n"
         "uniform sampler2D DiffTexture;\n"
         "void main()\n"
         "{\n"
-        " FragColor = texture(DiffTexture, TexCoord);\n"
+        "vec3 norm = normalize(Normal);\n"
+        "vec3 lightDir = normalize(vec3(3.0f,4.0f,8.0f) - FragPos);\n"
+        "float diff = max(dot(norm, lightDir), 0.0);\n"
+        "vec3 diffuse = diff * vec3(1.0f,1.0f,1.0f);\n"
+        "FragColor = vec4(diffuse + vec3(0.1f, 0.1f, 0.1f), 1.0f) * texture(DiffTexture, TexCoord);\n"
         " }\n\0";
    this->createShader(fs,vs);
 };

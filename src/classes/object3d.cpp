@@ -319,7 +319,7 @@ TexCoord object3d::getTextureCoordFromString(string line){
     float y = std::stof(line.substr(l2+1, -1));
     
     TexCoord textureCoord = *new TexCoord();
-    
+
     textureCoord.x = x;
     textureCoord.y = y;
     

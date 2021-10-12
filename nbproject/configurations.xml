@@ -4,6 +4,7 @@
     <logicalFolder name="classes" displayName="classes" projectFiles="true">
       <itemPath>src/classes/Face.cpp</itemPath>
       <itemPath>src/classes/Game.cpp</itemPath>
+      <itemPath>src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp</itemPath>
       <itemPath>src/classes/Shader.cpp</itemPath>
       <itemPath>src/classes/Vector.cpp</itemPath>
       <itemPath>src/classes/camera.cpp</itemPath>
@@ -17,6 +18,7 @@
     <logicalFolder name="headers" displayName="headers" projectFiles="true">
       <itemPath>src/headers/Face.h</itemPath>
       <itemPath>src/headers/Game.h</itemPath>
+      <itemPath>src/headers/Light.h</itemPath>
       <itemPath>src/headers/Shader.h</itemPath>
       <itemPath>src/headers/Vector.h</itemPath>
       <itemPath>src/headers/camera.h</itemPath>
@@ -106,11 +108,18 @@
       </item>
       <item path="src/headers/Game.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/headers/Light.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/headers/Shader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/headers/Vector.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/headers/camera.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/headers/mat4.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -169,11 +178,18 @@
       </item>
       <item path="src/headers/Game.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/headers/Light.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/headers/Shader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/headers/Vector.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/headers/camera.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/headers/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Light.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/headers/mat4.h" ex="false" tool="3" flavor2="0">
       </item>
