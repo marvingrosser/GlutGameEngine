@@ -26,7 +26,7 @@ Game::Game(player spieler, szene scene){
     Game::scene.setPlayer(this->spieler);
 };
 void Game::loadObjs(){
-    Game::scene.addObjFromFile("src/data/objects/newcube.obj","src/data/textures/diffuse/stonefloor.bmp");
+    Game::scene.addObjFromFile("src/data/objects/ape.obj","src/data/textures/diffuse/stonefloor.bmp");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);

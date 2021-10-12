@@ -139,7 +139,7 @@ void object3d::init(){
     glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize *sizeof(float)*8, this->vertexdata, GL_STATIC_DRAW);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int)*3, this->facedata,GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int), this->facedata,GL_STATIC_DRAW);
     
     glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
@@ -177,7 +177,7 @@ void object3d::render(){
     
     glBindVertexArray(VAO);
     
-    glDrawElements(GL_TRIANGLES, this->faceDataSize*3, GL_UNSIGNED_INT,(void*)(0));
+    glDrawElements(GL_TRIANGLES, this->faceDataSize, GL_UNSIGNED_INT,(void*)(0));
     
     glBindVertexArray(0);
     
