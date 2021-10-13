@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Shader.h"
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -16,7 +17,7 @@ class camera {
         Vector direction;
     
     public: 
-        void render(GLuint shaderid);
+        void render(Shader * shader);
         void init(Vector pos, int width, int height, float fov, Vector direction);
         
         camera();

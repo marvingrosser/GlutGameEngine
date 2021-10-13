@@ -33,11 +33,10 @@ void camera::setDirection(Vector newDir){
 Vector camera::getDirection(){
     return this->direction;
 };
-void camera::render(GLuint shaderid){
-    int projection = glGetUniformLocation(shaderid, "projection");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, this->projectionmatrix.getPtr());
-    int view = glGetUniformLocation(shaderid, "view");
-    glUniformMatrix4fv(view, 1, GL_FALSE, this->viewmatrix.getPtr());
+void camera::render(Shader *shader){
+    shader->setMatrix("projection", this->projectionmatrix.getPtr());
+    shader->setMatrix("view", this->viewmatrix.getPtr());
+    
 
 };
 camera::camera(Vector startPos, int width, int height){

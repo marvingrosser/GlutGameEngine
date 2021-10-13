@@ -103,9 +103,11 @@ void Game::init(){
 void Game::render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Bufferclearing
     //glLoadIdentity(); //Identitymatrix laden (die mit diagonal 1en)
+    
     Game::spieler.renderMouseKeyboard();
     GLuint id = Game::scene.getObjectByID(0).getShader();
-    Game::spieler.render(id);
+    Game::spieler.render(Game::scene.getShader());
+     
     Game::scene.render();
     
     

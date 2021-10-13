@@ -9,7 +9,7 @@ build/Debug/GNU-Linux/src/classes/camera.o: src/classes/camera.cpp \
  /usr/include/GL/gl.h /usr/include/GL/glew.h /usr/include/GL/glext.h \
  /usr/include/GL/glu.h /usr/include/GL/glut.h \
  src/classes/../headers/camera.h src/classes/../headers/mat4.h \
- src/classes/../headers/Vector.h
+ src/classes/../headers/Vector.h src/classes/../headers/Shader.h
 src/headers/Game.h:
 src/headers/Shader.h:
 src/headers/Vector.h:
@@ -39,3 +39,4 @@ src/headers/Vector.h:
 src/classes/../headers/camera.h:
 src/classes/../headers/mat4.h:
 src/classes/../headers/Vector.h:
+src/classes/../headers/Shader.h:

@@ -39,6 +39,7 @@ public:
      * @param vsCode Vertex Shader-Code
      */
     void createShader(char * fsCode, char * vsCode);
+    void setMatrix(string name, GLfloat * data);
     /**
      * Sends Vectordata to Shader (vec3)
      * @param name Identifyier the Data will be called in the shader

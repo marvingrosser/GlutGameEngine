@@ -18,7 +18,7 @@
 using std::vector;
 
 szene::szene() {
-    this->light = * new Light(*new Vector(1.0f, 10.0f, 1.0f), *new Vector(1.0f,1.0f,1.0f));
+    this->light = * new Light(*new Vector(1.0f, 1.0f, 1.0f), *new Vector(1.0f,1.0f,1.0f));
     
 };
 
@@ -39,6 +39,7 @@ vector<object3d> szene::getObjects(){
 };
 
 void szene::render(){
+
     this->light.sendToShader(&this->shader);
     for(auto object : this->objects){
         

@@ -17,10 +17,11 @@
 #include "Vector.h"
 #include <math.h>
 #include <GL/glut.h>
+#include "Shader.h"
 #include<iostream>
 class player{
 public:
-    void render(GLuint shaderId);
+    void render(Shader * shader);
     player(int width, int height, double sensitivity, double walk_sens) ;
     player();
     void renderMouseKeyboard();

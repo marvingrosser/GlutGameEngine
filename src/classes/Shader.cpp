@@ -124,6 +124,10 @@ string Shader::getVSCode(){
 void Shader::use(){
     glUseProgram(this->programID);
 }
+void Shader::setMatrix(string name, GLfloat* data){
+    int id = glGetUniformLocation(this->programID, name.c_str());
+    glUniformMatrix4fv(id, 1, GL_FALSE, data);
+}
 void Shader::setVector(string name, Vector data){
     std::cout << data.to_string()<< std::endl;
     glUniform3f(glGetUniformLocation(this->programID,name.c_str()), data.getX(), data.getY(), data.getZ());

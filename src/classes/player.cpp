@@ -16,8 +16,9 @@
 using namespace std;
 using std::cout;
 using std::endl;
-void player::render(GLuint shaderId){
-    this->cam.render(shaderId);
+void player::render(Shader * shader){
+    shader->setVector("camPos", this->cam.getPosition());
+    this->cam.render(shader);
 };
 player::player(int width, int height, double sensitivity, double walk_sens){
     this->cam = * new camera(width, height);
