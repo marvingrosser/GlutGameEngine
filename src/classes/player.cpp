@@ -117,20 +117,20 @@ void player::calculateKeyboardmovement(Vector* direction){
         
     }else if (movefb==-1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() - direction->getX() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY() ,
                     this->cam.getPosition().getZ() - direction->getZ() * walk_sens);
         movecount += 0.043f;
         
     }
     if (moverl==1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() - direction->getZ() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY() ,
                     this->cam.getPosition().getZ() + direction->getX() * walk_sens);
         movecount += 0.043f;
     }
     else if(moverl==-1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() + direction->getZ() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY(),
                     this->cam.getPosition().getZ() - direction->getX() * walk_sens);
         movecount += 0.043f;
     }

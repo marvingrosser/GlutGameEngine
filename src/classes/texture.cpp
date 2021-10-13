@@ -23,7 +23,7 @@ void Texture::loadTexture(string name, GLuint *id){
             
             glGenTextures(1, id);
 
-
+            glActiveTexture(GL_TEXTURE0+this->number);
             glBindTexture(GL_TEXTURE_2D, *id);
 
 
@@ -46,8 +46,9 @@ void Texture::loadTexture(string name, GLuint *id){
     }
 }
 
-Texture::Texture(string name){
+Texture::Texture(string name,unsigned int number){
     this->id = *new GLint;
+    this->number = number;
     this->loadTexture(name,&this->id);
 }
 Texture::Texture(){

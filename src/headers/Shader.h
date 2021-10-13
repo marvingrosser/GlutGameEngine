@@ -59,6 +59,7 @@ public:
      * @param data the Float data that will be sent to the shader
      */
     void setConstant(string name, float data);
+    void setInt(string name, int data);
     /**
      * 
      * @return Fragment shader Code 

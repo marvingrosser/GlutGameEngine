@@ -17,7 +17,7 @@
 player Game::spieler{ * new player(1920,1080,0.002, 0.2)};
 szene Game::scene{ * new szene()};
 Game::Game(){
-    Game::spieler = * new player(1920,1080,0.002, 0.8);
+    Game::spieler = * new player(1920,1080,0.002, 0.2);
     Game::scene = * new szene();
 };
 Game::Game(player spieler, szene scene){
@@ -26,7 +26,7 @@ Game::Game(player spieler, szene scene){
     Game::scene.setPlayer(this->spieler);
 };
 void Game::loadObjs(){
-    Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/diffuse/stonefloor.bmp");
+    Game::scene.addObjFromFile("src/data/objects/haus.obj","src/data/textures/scifi1/");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);

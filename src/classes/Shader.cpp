@@ -159,3 +159,7 @@ string Shader::readFile(string name){
     }
     return code;
 }
+
+void Shader::setInt(string name, int data){
+    glUniform1i(glGetUniformLocation(this->programID,name.c_str()), data);
+}

@@ -122,9 +122,9 @@ void object3d::init(Shader * shader){
     glGenBuffers(1, &EBO);
     
     
-    glBindTexture(GL_TEXTURE_2D, this->diffuse.getID());
-    
-    
+    this->shader->setInt("diffusemap", 0);
+    this->shader->setInt("specularmap", 1);
+    this->shader->setInt("normalmap", 2);
     glBindVertexArray(VAO);
     
     
@@ -153,7 +153,9 @@ object3d::object3d(string name, string textureName,Shader * shader){
     this->readObj(name);
     
 
-    this->diffuse = * new Texture(textureName);
+    this->diffuse = * new Texture(textureName+"diffuse.bmp",0);
+    this->specular = * new Texture(textureName+"specular.bmp",1);
+    this->normal = * new Texture(textureName+"normal.bmp",2);
     
     glEnable(GL_TEXTURE_2D);
     this->init(shader);
@@ -167,7 +169,12 @@ void object3d::render(){
     //std::cout << "render" << std::endl;
     
     this->shader->use();
-    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->diffuse.getID());
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, this->specular.getID());
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, this->normal.getID());
     
     glBindVertexArray(VAO);
     
