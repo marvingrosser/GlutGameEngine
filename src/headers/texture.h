@@ -22,9 +22,11 @@ using std::string;
 class Texture{
     public:
         Texture();
-        Texture(string nam, GLuint *id);
+        Texture(string name);
+        GLuint getID();
     private:
         void loadTexture(string name , GLuint *id);
+        GLuint id;
 };
 
 

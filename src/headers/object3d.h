@@ -197,9 +197,10 @@ private:
     float *vertexdata;
     unsigned int *facedata;
     //vector<Face> faces; //weil momentan unnütz
-    vector<Vector> vertices;
     //vector<vector<double>> textureCoord; //texturing will get better
-    GLuint *textureId;
+    Texture diffuse;
+    Texture specular;
+    Texture normal;
     
 };
 

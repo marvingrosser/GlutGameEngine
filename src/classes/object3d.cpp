@@ -121,9 +121,9 @@ void object3d::init(Shader * shader){
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     
-    if(this->textureId != NULL){
-        glBindTexture(GL_TEXTURE_2D, *this->textureId);
-    }
+    
+    glBindTexture(GL_TEXTURE_2D, this->diffuse.getID());
+    
     
     glBindVertexArray(VAO);
     
@@ -152,8 +152,9 @@ void object3d::init(Shader * shader){
 object3d::object3d(string name, string textureName,Shader * shader){
     this->readObj(name);
     
-    this->textureId = new GLuint;
-    new Texture(textureName, this->textureId );
+
+    this->diffuse = * new Texture(textureName);
+    
     glEnable(GL_TEXTURE_2D);
     this->init(shader);
     

@@ -46,8 +46,12 @@ void Texture::loadTexture(string name, GLuint *id){
     }
 }
 
-Texture::Texture(string name, GLuint *id){
-    this->loadTexture(name,id);
+Texture::Texture(string name){
+    this->id = *new GLint;
+    this->loadTexture(name,&this->id);
 }
 Texture::Texture(){
+}
+GLuint Texture::getID(){
+    return this->id;
 }
