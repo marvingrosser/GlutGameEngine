@@ -4,3 +4,4 @@ It does:
   - Diffuse and Ambient Lighting
   - Texture loading [.bmp] and projecting texture to Object [on th UV-Projection]
   - Simple FPS-Camera movement
+  - read Shader-Code from File
