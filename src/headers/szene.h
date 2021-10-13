@@ -20,7 +20,7 @@
 #include <string>
 #include "object3d.h"
 #include "player.h"
-
+#include "Shader.h"
 using std::vector;
 using std::string;
 
@@ -43,7 +43,6 @@ public:
 private:
     vector<object3d> objects;
     player spieler;
-    
 };
 
 #endif /* SZENE_H */

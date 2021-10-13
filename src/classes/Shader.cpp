@@ -17,6 +17,12 @@
 GLuint Shader::getID(){
     return this->programID;
 };
+Shader::Shader(string vsPath, string fsPath){
+    string vsCode =  Shader::readFile(vsPath);
+    string fsCode =  Shader::readFile(fsPath);
+    
+    this->createShader((char *)fsCode.c_str(),(char *)vsCode.c_str());
+}
 Shader::Shader(){
     char * vs = (char*) "#version 460 core\n "
     "layout (location = 0) in vec3 aPos;\n"
@@ -118,4 +124,33 @@ string Shader::getVSCode(){
 void Shader::use(){
     glUseProgram(this->programID);
 }
+void Shader::setVector(string name, Vector data){
+    glUniform3f(glGetUniformLocation(this->programID,name.c_str()), data.getX(), data.getY(), data.getZ());
+}
+void Shader::set2DVector(string name, float x, float y){
+    glUniform2f(glGetUniformLocation(this->programID,name.c_str()),x,y);
+}
+void Shader::setConstant(string name, float data){
+    glUniform1f(glGetUniformLocation(this->programID,name.c_str()), data);
+}
+string Shader::readFile(string name){
+    string code = "";
+    string line;
+    ifstream file (name);
+    vector<string> lines;
 
+  
+    if (file.is_open()){
+        while ( getline (file,line) ){
+            code.append(line);
+            code.push_back('\n');
+        }
+        code.push_back('\0');
+        //std::cout <<"Shader-Code:" << std::endl;
+        //std::cout << code << std::endl;
+        file.close();
+    }else{
+        cout << "Unable to open file: " << name << std::endl;
+    }
+    return code;
+}

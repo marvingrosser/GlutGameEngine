@@ -29,9 +29,10 @@ public:
     Shader();
     /**
      * loads String from given File
-     * @param path the path pointing to the file
+     * @param vsPath the path pointing to the Vertex Shader file
+     * @param fsPath the path pointing to the Fragment Shader file
      */
-    Shader(string path);
+    Shader(string vsPath, string fsPath);
     /**
      *  Creates Shader with Shadercode provided in cstring
      * @param fsCode Fragment Shader-Code
@@ -77,6 +78,12 @@ public:
      */
     void use();
 private:
+    /**
+     * reads file and returns c-string
+     * @param name filepath
+     * @return 
+     */
+    string readFile(string name);
     char * fsCode;
     char * vsCode;
     GLuint fsID;

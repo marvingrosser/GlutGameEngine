@@ -115,7 +115,7 @@ void object3d::init(){
     }
     
     
-    this->shader = *new Shader();
+    this->shader = *new Shader("src/shaders/vertex_shader.glsl","src/shaders/fragment_shader.glsl");
     this->shader.use();
     
     this->modelmatrix = * new mat4();
