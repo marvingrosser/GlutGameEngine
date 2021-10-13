@@ -18,7 +18,7 @@
 using std::vector;
 
 szene::szene() {
-    
+    this->light = * new Light(*new Vector(1.0f, 10.0f, 1.0f), *new Vector(1.0f,1.0f,1.0f));
     
 };
 
@@ -39,6 +39,7 @@ vector<object3d> szene::getObjects(){
 };
 
 void szene::render(){
+    this->light.sendToShader(&this->shader);
     for(auto object : this->objects){
         
         object.render();
@@ -53,6 +54,13 @@ player szene::getPlayer(){
 
 void szene::addObjFromFile(string name, string textureName){
     
-    object3d obj = * new object3d(name,textureName);
+    object3d obj = * new object3d(name,textureName,&this->shader);
     objects.push_back(obj);
+}
+void szene::initShader(string vsPath, string fsPath){
+    this->shader = * new Shader(vsPath, fsPath);
+    this->shader.use();
+}
+Shader * szene::getShader(){
+    return &this->shader;
 }

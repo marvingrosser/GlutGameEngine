@@ -95,15 +95,8 @@ void object3d::readObj(string name){
     std::cout << "Number Unique Vertex-Normal-TexCoord Combinations:\t"<<  this->vertexDataSize/8 << std::endl; 
 };
 
-object3d::object3d(string name){
-    this->textureId = NULL;
-    this->readObj(name);
-    this->init();
-    
 
-
-}
-void object3d::init(){
+void object3d::init(Shader * shader){
     
        std::cout << "Vertices"<< std::endl;
     for(int i = 0; i < 10;i++){
@@ -115,13 +108,13 @@ void object3d::init(){
     }
     
     
-    this->shader = *new Shader("src/shaders/vertex_shader.glsl","src/shaders/fragment_shader.glsl");
-    this->shader.use();
+    this->shader = shader;
+    this->shader->use();
     
     this->modelmatrix = * new mat4();
-    GLuint model = glGetUniformLocation(shader.getID(), "model");
+    GLuint model = glGetUniformLocation(shader->getID(), "model");
     
-    glProgramUniformMatrix4fv(shader.getID(),model, 1, GL_FALSE, this->modelmatrix.getPtr());
+    glProgramUniformMatrix4fv(shader->getID(),model, 1, GL_FALSE, this->modelmatrix.getPtr());
     
     
     glGenVertexArrays(1, &VAO);
@@ -156,23 +149,23 @@ void object3d::init(){
  
     
 };
-object3d::object3d(string name, string textureName){
+object3d::object3d(string name, string textureName,Shader * shader){
     this->readObj(name);
     
     this->textureId = new GLuint;
     new Texture(textureName, this->textureId );
     glEnable(GL_TEXTURE_2D);
-    this->init();
+    this->init(shader);
     
 }
 GLuint object3d::getShader(){
-    return this->shader.getID();
+    return this->shader->getID();
 };
 void object3d::render(){
     
     //std::cout << "render" << std::endl;
     
-    this->shader.use();
+    this->shader->use();
     
     
     glBindVertexArray(VAO);

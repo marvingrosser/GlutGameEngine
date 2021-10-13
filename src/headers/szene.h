@@ -21,6 +21,7 @@
 #include "object3d.h"
 #include "player.h"
 #include "Shader.h"
+#include "Light.h"
 using std::vector;
 using std::string;
 
@@ -31,6 +32,8 @@ public:
     szene(object3d obj);
     
     szene(vector<object3d> objs);
+    void initShader(string vsPath, string fsPath);
+    Shader * getShader();
     void render();
     player getPlayer();
     void setPlayer(player spieler);
@@ -42,7 +45,9 @@ public:
     
 private:
     vector<object3d> objects;
+    Light light;
     player spieler;
+    Shader shader;
 };
 
 #endif /* SZENE_H */

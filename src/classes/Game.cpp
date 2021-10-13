@@ -26,7 +26,7 @@ Game::Game(player spieler, szene scene){
     Game::scene.setPlayer(this->spieler);
 };
 void Game::loadObjs(){
-    Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/diffuse/stonefloor.bmp");
+    Game::scene.addObjFromFile("src/data/objects/plane.obj","src/data/textures/diffuse/stonefloor.bmp");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);
@@ -83,7 +83,7 @@ void Game::init(){
         exit(1); // or handle the error in a nicer way
     if (!GLEW_VERSION_2_1)  // check that the machine supports the 2.1 API.
         exit(1); // or handle the error in a nicer way
-    
+    this->scene.initShader("src/shaders/vertex_shader.glsl","src/shaders/fragment_shader.glsl");
     this->loadObjs();
     glutKeyboardUpFunc(Game::releaseKey); // anbinden der releaseKey an event wenn ein Key losgelassen wird
     glutIgnoreKeyRepeat(1); //wenn eine taste gehalten wird: kein rumspammen (wie wenn du in word eine Taste gedrückt hältst--> das verhindern)

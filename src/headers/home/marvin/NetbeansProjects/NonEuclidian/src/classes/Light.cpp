@@ -12,15 +12,17 @@
  */
 
 #include "../headers/Light.h"
-
+void Light::sendToShader(Shader* shader){
+    shader->setVector("lightColor", color);
+    shader->setVector("lightPos", position);
+}
 Light::Light(Vector position, Vector color) {
     this->position = position;
     this->color = color;
 }
 
-Light::Light(const Light& orig) {
-}
-
-Light::~Light() {
+Light::Light() {
+    this->color = * new Vector(1.0f,1.0f,1.0f);
+    this->position = * new Vector(0.0f,0.0f,0.0f);
 }
 

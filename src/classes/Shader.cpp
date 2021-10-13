@@ -56,7 +56,7 @@ Shader::Shader(){
         "vec3 diffuse = diff * vec3(1.0f,1.0f,1.0f);\n"
         "FragColor = vec4(diffuse + vec3(0.1f, 0.1f, 0.1f), 1.0f) * texture(DiffTexture, TexCoord);\n"
         " }\n\0";
-   this->createShader(fs,vs);
+   //this->createShader(fs,vs);
 };
 void Shader::createShader(char * ifsCode, char * ivsCode) {
   
@@ -125,6 +125,7 @@ void Shader::use(){
     glUseProgram(this->programID);
 }
 void Shader::setVector(string name, Vector data){
+    std::cout << data.to_string()<< std::endl;
     glUniform3f(glGetUniformLocation(this->programID,name.c_str()), data.getX(), data.getY(), data.getZ());
 }
 void Shader::set2DVector(string name, float x, float y){

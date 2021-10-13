@@ -45,8 +45,7 @@ public:
     object3d();
     
     object3d(vector<Face> faces);
-    object3d(string name);
-    object3d(string name, string textureName );
+    object3d(string name, string textureName ,Shader * shader);
     
     void addFace(Face newface);
     
@@ -54,7 +53,7 @@ public:
     void render();
     GLuint getShader();
 private:
-    void init();
+    void init(Shader * shader);
     /**
      * fills the Face-Index data of the EBO with the new calculated Indeces 
      * @param faces
@@ -189,7 +188,7 @@ private:
     mat4 getModelMatrix();
     
     mat4 modelmatrix;
-    Shader shader;
+    Shader * shader;
     unsigned int VBO;
     unsigned int VAO;
     unsigned int EBO;

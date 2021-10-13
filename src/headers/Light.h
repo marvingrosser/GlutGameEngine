@@ -14,12 +14,12 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 #include "Vector.h"
-
+#include "Shader.h"
 class Light {
 public:
     Light(Vector position, Vector color);
-    Light(const Light& orig);
-    virtual ~Light();
+    Light();
+    void sendToShader(Shader * shader);
 private:
     Vector position;
     Vector color;
