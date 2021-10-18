@@ -44,8 +44,8 @@ void player::renderMouseKeyboard(){
     
     Vector CNORM = Vector();
     
-    Vector Rvec = Vector(- sin(x_mouse), sin(y_mouse),  -cos(x_mouse));
-    
+    Vector Rvec = Vector(cos(x_mouse)*cos(y_mouse), sin(y_mouse),  sin(-x_mouse)*cos(y_mouse));
+    Rvec.normalize();
     CNORM.set(0.0, 1.0, 0.0);
         
     //Rvec.set(); //mausbewegung in bewegung der Camera umrechnen siehe Vektorrechnung
@@ -62,6 +62,11 @@ void player::mouse(int x, int y){
     if(x!=cx || y!=cy){
         x_mouse += (cx - x) * sens;
         y_mouse += (cy - y) * sens;
+        if(y_mouse > 3.14f/2){
+            y_mouse =3.14f/2;
+        }else if(y_mouse < - 3.14f/2){
+            y_mouse =-3.14f/2;
+        }
     //cout << x_mouse <<' ' << y_mouse << endl; //print mauseingaben
     
         glutWarpPointer(cx, cy);
@@ -117,20 +122,20 @@ void player::calculateKeyboardmovement(Vector* direction){
         
     }else if (movefb==-1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() - direction->getX() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY() ,
                     this->cam.getPosition().getZ() - direction->getZ() * walk_sens);
         movecount += 0.043f;
         
     }
     if (moverl==1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() - direction->getZ() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY() ,
                     this->cam.getPosition().getZ() + direction->getX() * walk_sens);
         movecount += 0.043f;
     }
     else if(moverl==-1.0f){
         this->cam.setPosition(this->cam.getPosition().getX() + direction->getZ() * walk_sens,
-                    this->cam.getPosition().getY() + sin(movecount)*0.1 ,
+                    this->cam.getPosition().getY(),
                     this->cam.getPosition().getZ() - direction->getX() * walk_sens);
         movecount += 0.043f;
     }
