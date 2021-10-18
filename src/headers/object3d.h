@@ -45,13 +45,37 @@ public:
     object3d();
     
     object3d(vector<Face> faces);
-    object3d(string name, string textureName ,Shader * shader);
-    
+    object3d(string name, string textureName ,Shader * shader); 
+    /**
+     * Translates the object from LOCATION to LOCATION + vec
+     * @param vec amount to translate
+     */
+    void translate(Vector vec);
     void addFace(Face newface);
     
     void readObj(string name);
     void render();
     GLuint getShader();
+    /**
+     * Sets Transformationmatrix for Model (mat4)
+     * @param model transformation matrix 
+     */
+    void setModelMatrix(mat4 model);
+    /**
+     * Sets Transformationmatrix for Model (double[16])
+     * @param model transformation matrix 
+     */
+    void setModelMatrix(double model[16]);
+    /**
+     * 
+     * @return Transformation Matrix for this Model (glm::mat4)
+     */
+    glm::mat4 getModelMatrixGLM();
+     /**
+     * 
+     * @return Transformation Matrix for this Model (mat4)
+     */
+    mat4 getModelMatrix();
 private:
     void init(Shader * shader);
     /**
@@ -166,26 +190,7 @@ private:
     int countOccurences(char c, string &str);
 
     
-    /**
-     * Sets Transformationmatrix for Model (mat4)
-     * @param model transformation matrix 
-     */
-    void setModelMatrix(mat4 model);
-    /**
-     * Sets Transformationmatrix for Model (double[16])
-     * @param model transformation matrix 
-     */
-    void setModelMatrix(double model[16]);
-    /**
-     * 
-     * @return Transformation Matrix for this Model (glm::mat4)
-     */
-    glm::mat4 getModelMatrixGLM();
-     /**
-     * 
-     * @return Transformation Matrix for this Model (mat4)
-     */
-    mat4 getModelMatrix();
+    
     
     mat4 modelmatrix;
     Shader * shader;

@@ -129,7 +129,7 @@ void Shader::setMatrix(string name, GLfloat* data){
     glUniformMatrix4fv(id, 1, GL_FALSE, data);
 }
 void Shader::setVector(string name, Vector data){
-    std::cout << data.to_string()<< std::endl;
+    //std::cout << data.to_string()<< std::endl;
     glUniform3f(glGetUniformLocation(this->programID,name.c_str()), data.getX(), data.getY(), data.getZ());
 }
 void Shader::set2DVector(string name, float x, float y){

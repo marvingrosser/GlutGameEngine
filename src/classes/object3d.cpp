@@ -176,6 +176,7 @@ void object3d::render(){
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, this->normal.getID());
     
+    
     glBindVertexArray(VAO);
     
     glDrawElements(GL_TRIANGLES, this->faceDataSize, GL_UNSIGNED_INT,(void*)(0));
@@ -445,3 +446,8 @@ void object3d::fillFaceIndexData(vector<LinearVertice> faces, vector<LinearVerti
         }
     }
 };
+
+void object3d::translate(Vector vec){
+    this->modelmatrix.translate(vec);
+    
+}
