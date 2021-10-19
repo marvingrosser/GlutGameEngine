@@ -26,8 +26,8 @@ Game::Game(player spieler, szene scene){
     Game::scene.setPlayer(this->spieler);
 };
 void Game::loadObjs(){
-    Game::scene.addObjFromFile("src/data/objects/haus.obj","src/data/textures/plates02/");
-    //Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/scifi1/");
+    Game::scene.addObjFromFile("src/data/objects/haus.obj","src/data/textures/scifi2/");
+    Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/plates02/");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);

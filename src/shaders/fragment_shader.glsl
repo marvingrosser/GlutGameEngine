@@ -12,6 +12,8 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
+in vec3 normalBaseOne;
+in vec3 normalBaseTwo;
 uniform PointLight light;
 uniform vec3 camPos;
 uniform sampler2D diffusemap;
@@ -19,10 +21,10 @@ uniform sampler2D specularmap;
 uniform sampler2D normalmap; //normalmapping include
 void main()
 {
-    
+    mat3 base = mat3(-normalBaseTwo,-normalBaseOne,Normal);
     //vec3 norm = normalize(Normal);
-    vec3 normalMapRGB = texture(normalmap,TexCoord).rgb;
-    vec3 norm = normalize(Normal -0.0f* normalMapRGB * 2.0f - 1.0f);
+    vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
+    vec3 norm = base*normalMapRGB*2.0f;
     vec3 lightVec = light.position - FragPos;
     float lightDistance = length(lightVec);
     float attenuation = 1.0 / (light.c + light.l * lightDistance + light.q * (lightDistance * lightDistance));

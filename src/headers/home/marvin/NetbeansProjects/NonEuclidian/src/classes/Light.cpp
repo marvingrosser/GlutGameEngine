@@ -17,9 +17,9 @@ void Light::sendToShader(Shader* shader){
     shader->setVector("light.ambient", color);
     shader->setVector("light.specular", color);
     shader->setVector("light.position", position);
-    shader->setConstant("light.c", 1.0f);
-    shader->setConstant("light.l", 0.09f);
-    shader->setConstant("light.q", 0.032f);
+    shader->setConstant("light.c", 0.8f);
+    shader->setConstant("light.l", 0.05f);
+    shader->setConstant("light.q", 0.012f);
 }
 Light::Light(Vector position, Vector color) {
     this->position = position;
