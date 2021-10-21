@@ -22,7 +22,7 @@ void player::render(Shader * shader){
 };
 player::player(int width, int height, double sensitivity, double walk_sens){
     this->cam = * new camera(width, height);
-    this->cam.setPosition(*new Vector(0.0f,0.0f,-1.0f));
+    this->cam.setPosition(*new Vector(0.0f,0.0f,0.0f));
     this->width = width;
     this->height= height;
     this->sens = sensitivity;
