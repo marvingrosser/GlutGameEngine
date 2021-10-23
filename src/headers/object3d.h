@@ -79,6 +79,16 @@ public:
 private:
     void init(Shader * shader);
     /**
+     * Calculate two orthogonal vectors -- with the normal an orthonormal basis to get every normal-map Vector in the right global Transformation
+     * @param faces 
+     * @param normals
+     * @param vertices
+     * @param textureCoords
+     * @return tangents and bitangents per Vertice
+     */
+    vector<Vector> calculate_tangent_bitangent(vector<LinearVertice> faces, vector<LinearVertice> combinations, vector<Vector> normals, vector<Vector> vertices, vector<TexCoord> textureCoords);
+    
+    /**
      * fills the Face-Index data of the EBO with the new calculated Indeces 
      * @param faces
      * @param combinations new calculated indeces
@@ -90,8 +100,9 @@ private:
      * @param normals
      * @param textureCoords
      * @param combinations
+     * @param tangents_bitangents
      */
-    void fillVertexData(vector<Vector> vertices, vector<Vector> normals, vector<TexCoord> textureCoords, vector<LinearVertice> combinations);
+    void fillVertexData(vector<Vector> vertices, vector<Vector> normals, vector<TexCoord> textureCoords, vector<LinearVertice> combinations,vector<Vector> tangents_bitangents);
     /**
      * Reads in the Vertex/Face index Data
      * @param name

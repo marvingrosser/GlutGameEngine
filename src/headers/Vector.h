@@ -79,7 +79,7 @@ public:
      * @return [double] distance 
      */
     double distance(Vector* vec);
-    
+    Vector operator +=(const Vector vec) const;
    /**
      * adds two vectors: (x1 + x2, y1 + y2, z1 + z2)
      * @param vec vector to add
@@ -92,7 +92,7 @@ public:
      * @param vec vector to substract vec = (x2, y2, z2)
      * @return [vector] the result of the substraction
      */
-    Vector operator -(const Vector vec) const ;
+    Vector operator -(const Vector &vec);
     
    /**
      * multiplies two vectors: (x1 * x2, y1 * y2, z1 * z2)

@@ -63,12 +63,25 @@ using namespace std;
         Vector sub = *this - *vec;
         return this->length(&sub);
     };
-    
+    Vector Vector::operator +=(const Vector vec) const {
+        Vector newVec;
+        newVec.vec[0] = this->vec[0] + vec.vec[0];
+        newVec.vec[1] = this->vec[1] + vec.vec[1];
+        newVec.vec[2] = this->vec[2] + vec.vec[2];
+        this->vec[0] = newVec.vec[0];
+        this->vec[1] = newVec.vec[1];
+        this->vec[2] = newVec.vec[2];
+        return newVec;
+    };
     Vector Vector::operator +(const Vector vec) const {
         return *new Vector(this->vec[0] + vec.vec[0], this->vec[1] + vec.vec[1], this->vec[2] + vec.vec[2]);
     };
-    Vector Vector::operator -(const Vector vec) const {
-        return *new Vector(this->vec[0] - vec.vec[0], this->vec[1] - vec.vec[1], this->vec[2] - vec.vec[2]);
+    Vector Vector::operator -(const Vector &vec){    
+        Vector newVec;
+        newVec.vec[0] = this->vec[0] - vec.vec[0];
+        newVec.vec[1] = this->vec[1] - vec.vec[1];
+        newVec.vec[2] = this->vec[2] - vec.vec[2];
+        return newVec;
     };
     
     Vector Vector::operator *(const Vector vec) const{
@@ -86,12 +99,14 @@ using namespace std;
         return *new Vector(this->vec[0] + addend, this->vec[1] + addend, this->vec[2] + addend);
     };
     
+    
     Vector Vector::operator -(const double substractor) const{
         return *new Vector(this->vec[0] - substractor, this->vec[1] - substractor, this->vec[2] - substractor);
     };
     
     Vector Vector::operator |(const Vector B) const{
-        return B - *this;
+        return *new Vector();
+        //return B - *this;
     };
     
     

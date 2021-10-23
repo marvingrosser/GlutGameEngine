@@ -12,6 +12,7 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
+in mat3 TBN;
 uniform PointLight light;
 uniform vec3 camPos;
 uniform sampler2D diffusemap;
@@ -21,8 +22,8 @@ void main()
 {
 
     //vec3 norm = normalize(Normal);
-    //vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
-    vec3 norm = Normal;
+    vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
+    vec3 norm = TBN * normalMapRGB ;
     vec3 lightVec = light.position - FragPos;
     float lightDistance = length(lightVec);
     float attenuation = 1.0 / (light.c + light.l * lightDistance + light.q * (lightDistance * lightDistance));
@@ -36,5 +37,5 @@ void main()
     
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = attenuation * diff * light.diffuse;
-    FragColor = vec4(diffuse + attenuation* light.ambient + specular, 1.0f) * texture(diffusemap, TexCoord);
+    FragColor = vec4(diffuse + attenuation* light.ambient*0.5f + specular, 1.0f) * texture(diffusemap, TexCoord);
 }

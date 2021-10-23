@@ -51,7 +51,7 @@ void object3d::readObj(string name){
     vector<TexCoord> textureCoords = object3d::getTextureCoordsFromOBJ(name);
     vector<LinearVertice> verticeCombinations = object3d::getVerticeCombinationsFromOBJ(name);
     vector<LinearVertice> faceIndeces = object3d::getFaceIndecesFromOBJ(name);
-    
+    vector<Vector> tangent_bitangent = object3d::calculate_tangent_bitangent(faceIndeces, verticeCombinations, normals, vertices, textureCoords);
     for(Vector vec:vertices){
         std::cout << "vertices:" << std::endl;
         std::cout << vec.to_string() << std::endl;
@@ -72,10 +72,15 @@ void object3d::readObj(string name){
         std::cout << "face:" << std::endl;
         std::cout << lin.vertIndex << " / " << lin.normalIndex << " / " << lin.texCoordIndex << " -:- " << lin.newLinearIndex<< std::endl;
     }
+    for(int i = 0; i< tangent_bitangent.size(); i=i+2){
+        Vector tangents[2] = {tangent_bitangent.at(i),tangent_bitangent.at(i+1)};
+        std::cout << "Tangent: \t"<< tangents[0].to_string()<< std::endl;
+        std::cout << "Bitangent: \t"<< tangents[1].to_string()<< std::endl;
+    }
     
     
-    
-    this->fillVertexData(vertices,normals,textureCoords,verticeCombinations);
+
+    this->fillVertexData(vertices,normals, textureCoords, verticeCombinations, tangent_bitangent);
     this->fillFaceIndexData(faceIndeces, verticeCombinations);
     std::cout << "vertexdata:" << std::endl;
     for(int i=0; i < this->vertexDataSize; i++){
@@ -98,14 +103,7 @@ void object3d::readObj(string name){
 
 void object3d::init(Shader * shader){
     
-       std::cout << "Vertices"<< std::endl;
-    for(int i = 0; i < 10;i++){
-        std::cout << "v(" << i+1 << "):\t\t(" << this->vertexdata[i*3]<< ", "<<this->vertexdata[i*3+1]<< ", " <<this->vertexdata[i*3+2]<< ")"<<std::endl;;
-    }
-    std::cout << "Faces"<< std::endl;
-    for(int i = 0; i < 10;i++){
-        std::cout << "f(" << i+1 << "):\t\t(" << this->facedata[i*3]<< ", "<<this->facedata[i*3+1]<< ", " <<this->facedata[i*3+2]<< ")"<<std::endl;;
-    }
+   
     
     
     this->shader = shader;
@@ -129,19 +127,25 @@ void object3d::init(Shader * shader){
     
     
     glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize *sizeof(float)*8, this->vertexdata, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize *sizeof(float)*14, this->vertexdata, GL_STATIC_DRAW);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int), this->facedata,GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
     
-    glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
+    glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(3* sizeof(float)));
     glEnableVertexAttribArray(1);
     
-    glVertexAttribPointer(2,2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));
+    glVertexAttribPointer(2,2, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(6* sizeof(float)));
     glEnableVertexAttribArray(2);
+    
+    glVertexAttribPointer(3,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(8* sizeof(float)));
+    glEnableVertexAttribArray(3);
+    
+    glVertexAttribPointer(4,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(11* sizeof(float)));
+    glEnableVertexAttribArray(4);
     
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
@@ -417,18 +421,29 @@ vector<LinearVertice> object3d::getFaceIndecesFromOBJ(string name){
     return vertexCombinations;
 };
 
-void object3d::fillVertexData(vector<Vector> vertices, vector<Vector> normals, vector<TexCoord> textureCoords, vector<LinearVertice> combinations){
-    this->vertexdata = new float[combinations.size()*8];
+void object3d::fillVertexData(vector<Vector> vertices, vector<Vector> normals, vector<TexCoord> textureCoords, vector<LinearVertice> combinations,vector<Vector> tangents_bitangents){
+    this->vertexdata = new float[combinations.size()*14];
     this->vertexDataSize = combinations.size();
     for(LinearVertice combi:combinations){
-        this->vertexdata[combi.newLinearIndex*8 + 0] = vertices.at(combi.vertIndex).getX();
-        this->vertexdata[combi.newLinearIndex*8 + 1] = vertices.at(combi.vertIndex).getY();
-        this->vertexdata[combi.newLinearIndex*8 + 2] = vertices.at(combi.vertIndex).getZ();
-        this->vertexdata[combi.newLinearIndex*8 + 3] = normals.at(combi.normalIndex).getX();
-        this->vertexdata[combi.newLinearIndex*8 + 4] = normals.at(combi.normalIndex).getY();
-        this->vertexdata[combi.newLinearIndex*8 + 5] = normals.at(combi.normalIndex).getZ();
-        this->vertexdata[combi.newLinearIndex*8 + 6] = textureCoords.at(combi.texCoordIndex).x;
-        this->vertexdata[combi.newLinearIndex*8 + 7] = textureCoords.at(combi.texCoordIndex).y;
+        this->vertexdata[combi.newLinearIndex*14 +  0] = vertices.at(combi.vertIndex).getX();   //Vertex
+        this->vertexdata[combi.newLinearIndex*14 +  1] = vertices.at(combi.vertIndex).getY();
+        this->vertexdata[combi.newLinearIndex*14 +  2] = vertices.at(combi.vertIndex).getZ();
+        
+        this->vertexdata[combi.newLinearIndex*14 +  3] = normals.at(combi.normalIndex).getX();  //Normal
+        this->vertexdata[combi.newLinearIndex*14 +  4] = normals.at(combi.normalIndex).getY();
+        this->vertexdata[combi.newLinearIndex*14 +  5] = normals.at(combi.normalIndex).getZ();
+        
+        this->vertexdata[combi.newLinearIndex*14 +  6] = textureCoords.at(combi.texCoordIndex).x; //TextureCoord
+        this->vertexdata[combi.newLinearIndex*14 +  7] = textureCoords.at(combi.texCoordIndex).y;
+        
+        this->vertexdata[combi.newLinearIndex*14 +  8] = tangents_bitangents.at(combi.newLinearIndex*2).getX(); //Tangent
+        this->vertexdata[combi.newLinearIndex*14 +  9] = tangents_bitangents.at(combi.newLinearIndex*2).getY();
+        this->vertexdata[combi.newLinearIndex*14 + 10] = tangents_bitangents.at(combi.newLinearIndex*2).getZ();
+        
+        this->vertexdata[combi.newLinearIndex*14 + 11] = tangents_bitangents.at(combi.newLinearIndex*2+1).getX(); //Bitangent
+        this->vertexdata[combi.newLinearIndex*14 + 12] = tangents_bitangents.at(combi.newLinearIndex*2+1).getY();
+        this->vertexdata[combi.newLinearIndex*14 + 13] = tangents_bitangents.at(combi.newLinearIndex*2+1).getZ();
+        
     }
 };
 
@@ -450,4 +465,60 @@ void object3d::fillFaceIndexData(vector<LinearVertice> faces, vector<LinearVerti
 void object3d::translate(Vector vec){
     this->modelmatrix.translate(vec);
     
+}
+
+vector<Vector> object3d::calculate_tangent_bitangent(vector<LinearVertice> faces, 
+                                                           vector<LinearVertice> combinations,
+                                                           vector<Vector> normals, 
+                                                           vector<Vector> vertices,
+                                                           vector<TexCoord> textureCoords){
+    vector<Vector> tangents_bitangents (combinations.size()*2);
+    for(int j=0; j < faces.size(); j=j+3){
+        
+        Vector pos1 = vertices.at(faces.at(j+0).vertIndex);
+        Vector pos2 = vertices.at(faces.at(j+1).vertIndex);
+        Vector pos3 = vertices.at(faces.at(j+2).vertIndex);
+        
+        
+        TexCoord uv1 = textureCoords.at(faces.at(j+0).texCoordIndex);
+        TexCoord uv2 = textureCoords.at(faces.at(j+1).texCoordIndex);
+        TexCoord uv3 = textureCoords.at(faces.at(j+2).texCoordIndex);
+        
+        Vector e1 = * new Vector(pos2.getX() - pos1.getX(), pos2.getY() - pos1.getY(), pos2.getZ() - pos1.getZ());
+        Vector e2 = * new Vector(pos3.getX() - pos1.getX(), pos3.getY() - pos1.getY(), pos3.getZ() - pos1.getZ());
+        
+        TexCoord duv1;
+            duv1.x = uv2.x - uv1.x;
+            duv1.y = uv2.y - uv1.y;
+        TexCoord duv2;
+            duv2.x = uv3.x - uv1.x;
+            duv2.y = uv3.y - uv1.y;
+        
+        float factor = 1.0f / (duv1.x * duv2.y - duv2.x * duv1.y);
+        
+        Vector tangents[2];
+        
+        tangents[0] = * new Vector( factor * (e1.getX() * duv2.y - e2.getX() * duv1.y)
+                                    ,factor * (e1.getY() * duv2.y - e2.getY() * duv1.y)
+                                    ,factor * (e1.getZ() * duv2.y - e2.getZ() * duv1.y));
+        
+        tangents[1] = * new Vector( factor * (- e1.getX() * duv2.x + e2.getX() * duv1.x)
+                                    ,factor * (- e1.getY() * duv2.x + e2.getY() * duv1.x)
+                                    ,factor * (- e1.getZ() * duv2.x + e2.getZ() * duv1.x));
+        std::cout << "Tangents:\t"<<tangents[0].to_string()<< std::endl;
+        for(int i = 0; i < combinations.size(); i++){
+            for(int z=0; z<3; z++){
+                if(faces.at(j+z).vertIndex == combinations.at(i).vertIndex &&
+                    faces.at(j+z).normalIndex == combinations.at(i).normalIndex &&
+                    faces.at(j+z).texCoordIndex == combinations.at(i).texCoordIndex){
+                tangents_bitangents.at(combinations.at(i).newLinearIndex*2) += tangents[0];
+                tangents_bitangents.at(combinations.at(i).newLinearIndex*2+1) += tangents[1];
+                
+                }
+            }
+        }
+    }
+    
+    
+    return tangents_bitangents;
 }

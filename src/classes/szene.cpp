@@ -18,7 +18,7 @@
 using std::vector;
 
 szene::szene() {
-    this->light = * new Light(*new Vector(1.0f, 1.0f, -1.0f), *new Vector(1.0f,1.0f,1.0f));
+    this->light = * new Light(*new Vector(1.0f, 1.0f, -1.0f), *new Vector(1.0f,0.9f,0.9f));
     
 };
 
