@@ -100,39 +100,8 @@ void object3d::readObj(string name){
     std::cout << "Number Unique Vertex-Normal-TexCoord Combinations:\t"<<  this->vertexDataSize/8 << std::endl; 
 };
 
+void object3d::createVertexAttributesBuffers(){
 
-void object3d::init(Shader * shader){
-    
-   
-    
-    
-    this->shader = shader;
-    this->shader->use();
-    
-    this->modelmatrix = * new mat4();
-    GLuint model = glGetUniformLocation(shader->getID(), "model");
-    
-    glProgramUniformMatrix4fv(shader->getID(),model, 1, GL_FALSE, this->modelmatrix.getPtr());
-    
-    
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    
-    
-    this->shader->setInt("diffusemap", 0);
-    this->shader->setInt("specularmap", 1);
-    this->shader->setInt("normalmap", 2);
-    this->shader->setInt("heightmap",3);
-    glBindVertexArray(VAO);
-    
-    
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize *sizeof(float)*14, this->vertexdata, GL_STATIC_DRAW);
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int), this->facedata,GL_STATIC_DRAW);
-    
     //position
     glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
@@ -154,33 +123,85 @@ void object3d::init(Shader * shader){
     glEnableVertexAttribArray(4);
     
     glBindBuffer(GL_ARRAY_BUFFER,0);
+    
+}
+
+void object3d::fillVertexBuffer(){
+    glBindBuffer(GL_ARRAY_BUFFER,VBO);
+    glBufferData(GL_ARRAY_BUFFER, this->vertexDataSize * sizeof(float) * 14, this->vertexdata, GL_STATIC_DRAW);
+}
+
+void object3d::fillElementBuffer(){
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize * sizeof(unsigned int), this->facedata, GL_STATIC_DRAW);
+}
+void object3d::linkTexturesToShader(){
+    this->shader->setInt("diffusemap",  0);
+    this->shader->setInt("specularmap", 1);
+    this->shader->setInt("normalmap",   2);
+    this->shader->setInt("heightmap",   3);
+}
+
+void object3d::generateBuffersAndVAO(){
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1,      &VBO);
+    glGenBuffers(1,      &EBO);
+}
+
+void object3d::init(Shader * shader){
+    
+    //init shader
+    this->shader = shader;
+    this->shader->use();
+    
+    //create modelmatrix
+    this->modelmatrix = * new mat4();
+    
+    //link modelmatrix to shader
+    this->shader->setMatrix("model", this->modelmatrix.getPtr());
+        
+    this->generateBuffersAndVAO();
+        
+    this->linkTexturesToShader();
+    
+    //fill buffers  
+        glBindVertexArray(VAO);
+        this->fillVertexBuffer();
+        this->fillElementBuffer();
+    
+    //segment the vertexdata
+    this->createVertexAttributesBuffers();
+    
+    
     glBindVertexArray(0);
     
  
     
 };
-object3d::object3d(string name, string textureName,Shader * shader){
-    this->readObj(name);
-    
 
+void object3d::loadTextures(string textureName){
     this->diffuse = * new Texture(textureName+"diffuse.bmp",0);
     this->specular = * new Texture(textureName+"specular.bmp",1);
     this->normal = * new Texture(textureName+"normal.bmp",2);
     this->height = * new Texture(textureName+"height.bmp",3);
+}
+
+object3d::object3d(string name, string textureName,Shader * shader){
+    this->readObj(name);
+    
+
+    this->loadTextures(textureName);
+    
     
     glEnable(GL_TEXTURE_2D);
     this->init(shader);
     
 }
+
 GLuint object3d::getShader(){
     return this->shader->getID();
 };
-void object3d::render(){
-    
-    //std::cout << "render" << std::endl;
-    
-    this->shader->use();
-    
+void object3d::bindTextures(){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->diffuse.getID());
     glActiveTexture(GL_TEXTURE1);
@@ -189,6 +210,14 @@ void object3d::render(){
     glBindTexture(GL_TEXTURE_2D, this->normal.getID());
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, this->height.getID());
+}
+
+void object3d::render(){
+    
+    
+    this->shader->use();
+    
+    this->bindTextures();
     
     
     glBindVertexArray(VAO);
@@ -197,12 +226,7 @@ void object3d::render(){
     
     glBindVertexArray(0);
     
-    /*
-    for(Face face: this->faces){
-        Face *f = &face;
-        f->render();
-        
-    }*/
+
           
 }
 

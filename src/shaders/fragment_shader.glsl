@@ -28,7 +28,8 @@ void main()
 
     //vec3 norm = normalize(Normal);
     vec3 viewDir = normalize( camPos - FragPos);
-    vec2 TexCoord = heightmapping(texCoord,viewDir);
+    //vec2 TexCoord = heightmapping(texCoord,viewDir);
+    vec2 TexCoord = texCoord;
     vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
     vec3 norm = TBN * normalMapRGB ;
     vec3 lightVec = light.position - FragPos;
@@ -48,6 +49,7 @@ void main()
 }
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir){
+    //viewdir = TBN * viewdir;
     float height = texture(heightmap, texcoord).r;
     vec2 pvec = viewdir.xy / viewdir.z * (height * heightscale);
     return texcoord - pvec;

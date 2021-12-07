@@ -77,6 +77,36 @@ public:
      */
     mat4 getModelMatrix();
 private:
+    
+    /**
+     * Bind texture-maps as GL_TEXTURES
+     */
+    void bindTextures();
+    /**
+     * generates via opengl the vbo, ebo and vao
+     */
+    void generateBuffersAndVAO();
+    /**
+     * Sets uniform links where the shader finds the texture data in the graphics card memory
+     */
+    void linkTexturesToShader();
+    /**
+     * fill Element Buffer with facedata 
+     */
+    void fillElementBuffer();
+    /**
+     * fill Vertex Buffer with vertexdata
+     */
+    void fillVertexBuffer();
+    /**
+     * Inits the VAO's that devide the vertexdata --> position | normal | texture coord | tangent | bitangent
+     */
+    void createVertexAttributesBuffers();
+    /**
+     * loads texture maps to memory
+     * @param textureName Associated textures-name
+     */
+    void loadTextures(string textureName);
     void init(Shader * shader);
     /**
      * Calculate two orthogonal vectors -- with the normal an orthonormal basis to get every normal-map Vector in the right global Transformation
