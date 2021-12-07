@@ -217,6 +217,7 @@ private:
     Texture diffuse;
     Texture specular;
     Texture normal;
+    Texture height;
     
 };
 

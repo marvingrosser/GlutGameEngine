@@ -123,6 +123,7 @@ void object3d::init(Shader * shader){
     this->shader->setInt("diffusemap", 0);
     this->shader->setInt("specularmap", 1);
     this->shader->setInt("normalmap", 2);
+    this->shader->setInt("heightmap",3);
     glBindVertexArray(VAO);
     
     
@@ -132,18 +133,23 @@ void object3d::init(Shader * shader){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->faceDataSize *sizeof(unsigned int), this->facedata,GL_STATIC_DRAW);
     
+    //position
     glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
     
+    //normal
     glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(3* sizeof(float)));
     glEnableVertexAttribArray(1);
     
+    //texture coords
     glVertexAttribPointer(2,2, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(6* sizeof(float)));
     glEnableVertexAttribArray(2);
     
+    //tangent
     glVertexAttribPointer(3,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(8* sizeof(float)));
     glEnableVertexAttribArray(3);
     
+    //bitangent
     glVertexAttribPointer(4,3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(11* sizeof(float)));
     glEnableVertexAttribArray(4);
     
@@ -160,6 +166,7 @@ object3d::object3d(string name, string textureName,Shader * shader){
     this->diffuse = * new Texture(textureName+"diffuse.bmp",0);
     this->specular = * new Texture(textureName+"specular.bmp",1);
     this->normal = * new Texture(textureName+"normal.bmp",2);
+    this->height = * new Texture(textureName+"height.bmp",3);
     
     glEnable(GL_TEXTURE_2D);
     this->init(shader);
@@ -173,12 +180,15 @@ void object3d::render(){
     //std::cout << "render" << std::endl;
     
     this->shader->use();
+    
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->diffuse.getID());
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->specular.getID());
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, this->normal.getID());
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, this->height.getID());
     
     
     glBindVertexArray(VAO);

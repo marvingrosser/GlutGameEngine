@@ -12,6 +12,8 @@
             <sourceRootList>
                 <sourceRootElem>src/headers</sourceRootElem>
                 <sourceRootElem>src/classes</sourceRootElem>
+                <sourceRootElem>src/headers</sourceRootElem>
+                <sourceRootElem>src/classes</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
