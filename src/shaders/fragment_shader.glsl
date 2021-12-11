@@ -20,14 +20,14 @@ uniform sampler2D specularmap;
 uniform sampler2D normalmap; //normalmapping include
 uniform sampler2D heightmap;
 
-float heightscale = 0.08f;
+float heightscale = 0.1f;
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir);
 void main()
 {
 
     //vec3 norm = normalize(Normal);
-    vec3 viewDir = TBN*normalize( camPos - FragPos);
+    vec3 viewDir = TBN * normalize( camPos - FragPos);
     vec2 TexCoord = heightmapping(texCoord,viewDir);
     //if(texCoord.x > 1.0 || texCoord.y > 1.0 || texCoord.x < 0.0 || texCoord.y < 0.0 ) discard;
     //vec2 TexCoord = texCoord;
@@ -53,7 +53,7 @@ vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     //viewdir = TBN * viewdir;
     const float minLayers = 32.0;
     const float maxLayers = 128.0;
-    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, 1.0), viewdir), 0.0));
+    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0));
 
     float layerDepth = 1.0 / layerNum;
     float currentDepth = 0.0;
