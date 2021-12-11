@@ -52,6 +52,7 @@ void object3d::readObj(string name){
     vector<LinearVertice> verticeCombinations = object3d::getVerticeCombinationsFromOBJ(name);
     vector<LinearVertice> faceIndeces = object3d::getFaceIndecesFromOBJ(name);
     vector<Vector> tangent_bitangent = object3d::calculate_tangent_bitangent(faceIndeces, verticeCombinations, normals, vertices, textureCoords);
+    
     for(Vector vec:vertices){
         std::cout << "vertices:" << std::endl;
         std::cout << vec.to_string() << std::endl;

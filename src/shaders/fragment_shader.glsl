@@ -45,7 +45,7 @@ void main()
     
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = attenuation * diff * light.diffuse;
-    FragColor = vec4(diffuse + attenuation* light.ambient*0.5f + specular, 1.0f) * texture(diffusemap, TexCoord);
+    FragColor = vec4(diffuse + attenuation* light.ambient * 0.5f + specular, 1.0f) * texture(diffusemap, TexCoord);
 }
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir){
