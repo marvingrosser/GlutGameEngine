@@ -20,22 +20,23 @@ uniform sampler2D specularmap;
 uniform sampler2D normalmap; //normalmapping include
 uniform sampler2D heightmap;
 
-float heightscale = 0.1f;
+float heightscale = 0.08f;
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir);
 void main()
 {
 
     //vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize( camPos - FragPos);
-    //vec2 TexCoord = heightmapping(texCoord,viewDir);
-    vec2 TexCoord = texCoord;
+    vec3 viewDir = TBN*normalize( camPos - FragPos);
+    vec2 TexCoord = heightmapping(texCoord,viewDir);
+    //if(texCoord.x > 1.0 || texCoord.y > 1.0 || texCoord.x < 0.0 || texCoord.y < 0.0 ) discard;
+    //vec2 TexCoord = texCoord;
     vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
-    vec3 norm = TBN * normalMapRGB ;
+    vec3 norm = normalMapRGB ;
     vec3 lightVec = light.position - FragPos;
     float lightDistance = length(lightVec);
     float attenuation = 1.0 / (light.c + light.l * lightDistance + light.q * (lightDistance * lightDistance));
-    vec3 lightDir = normalize(lightVec);
+    vec3 lightDir = TBN*normalize(lightVec);
     
     
     
@@ -50,7 +51,31 @@ void main()
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     //viewdir = TBN * viewdir;
-    float height = texture(heightmap, texcoord).r;
-    vec2 pvec = viewdir.xy / viewdir.z * (height * heightscale);
-    return texcoord - pvec;
+    const float minLayers = 32.0;
+    const float maxLayers = 128.0;
+    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, 1.0), viewdir), 0.0));
+
+    float layerDepth = 1.0 / layerNum;
+    float currentDepth = 0.0;
+    vec2 p = viewdir.xy * heightscale;
+    vec2 deltaTexCoord = p / layerNum;
+
+    vec2 currentTexCoord = texcoord;
+    float currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
+    while(currentDepth < currentDepthMapValue){
+        currentTexCoord -= deltaTexCoord;
+        currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
+        currentDepth += layerDepth;
+    }
+
+    vec2 texcoordPrev = currentTexCoord + deltaTexCoord;
+
+    float afterDepth = currentDepthMapValue - currentDepth;
+    float beforeDepth = texture(heightmap, texcoordPrev).r - currentDepth + layerDepth;
+
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoord = texcoordPrev * weight + currentTexCoord * (1.0 - weight);
+
+    return finalTexCoord;
+
 }

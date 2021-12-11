@@ -29,7 +29,7 @@ void Game::loadObjs(){
     //Game::scene.addObjFromFile("src/data/objects/axes.obj","src/data/textures/scifi2/");
     Game::scene.addObjFromFile("src/data/objects/lamp.obj","src/data/textures/lava/");
     //Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/scifi2/");
-    Game::scene.addObjFromFile("src/data/objects/haus.obj","src/data/textures/scifi1/");
+    Game::scene.addObjFromFile("src/data/objects/gang.obj","src/data/textures/scifi1/");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);
@@ -56,7 +56,7 @@ void Game::init(){
     //glutInitWindowPosition(0,0); //wo wird Fenster gespawnt
     //glutCreateWindow("game"); //Spawn window mit Name: "game"
     
-    glutGameModeString(":32@60");
+    glutGameModeString(":@60");
     glutEnterGameMode();
     
     glEnable(GLUT_MULTISAMPLE);//multisample Antialising MSAA

@@ -20,7 +20,7 @@ void main()
     vec3 T = normalize(vec3(model * vec4(aTangent,0.0f))) ;
     vec3 B = normalize(vec3(model * vec4(aBitangent,0.0f)));
     vec3 N = normalize(vec3(model * vec4(Normal,0.0f))) ;
-    TBN = mat3(T,B,N);
+    TBN = transpose(mat3(T,B,N));
     FragPos = vec3(model * vec4(aPos, 1.0f));
 }
 
