@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=glutgameengine
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/glutgameengine
+CND_ARTIFACT_NAME_Debug=noneuclidian
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/noneuclidian
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=glutgameengine.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/glutgameengine.tar
+CND_PACKAGE_NAME_Debug=noneuclidian.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/noneuclidian.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=glutgameengine
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/glutgameengine
+CND_ARTIFACT_NAME_Release=noneuclidian
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/noneuclidian
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
-CND_PACKAGE_NAME_Release=glutgameengine.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/glutgameengine.tar
+CND_PACKAGE_NAME_Release=noneuclidian.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/noneuclidian.tar
 #
 # include compiler specific variables
 #

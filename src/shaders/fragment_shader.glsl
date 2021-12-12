@@ -51,8 +51,8 @@ void main()
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     //viewdir = TBN * viewdir;
-    const float minLayers = 32.0;
-    const float maxLayers = 128.0;
+    const float minLayers = 4.0;
+    const float maxLayers = 16.0;
     float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0));
 
     float layerDepth = 1.0 / layerNum;

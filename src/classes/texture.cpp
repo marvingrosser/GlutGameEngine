@@ -2,10 +2,10 @@
 
 void Texture::loadTexture(string name, GLuint *id){
     std::ifstream myimage (name);
-    char header[54];
+    char header[138];
     char *data;
     if(myimage.is_open()){
-        myimage.read(header,54);
+        myimage.read(header,138);
         
         if(header[0]=='B' && header[1]=='M'){
             
