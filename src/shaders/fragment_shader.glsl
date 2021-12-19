@@ -20,16 +20,16 @@ uniform sampler2D specularmap;
 uniform sampler2D normalmap; //normalmapping include
 uniform sampler2D heightmap;
 
-float heightscale = 0.03f;
-
+float heightscale = 0.1f;
+vec2 heighmappingBinarySearch(vec2 texCoord, vec3 viewDir);
 vec2 heightmapping(vec2 texcoord, vec3 viewdir);
 void main()
 {
 
     //vec3 norm = normalize(Normal);
     vec3 viewDir = TBN * normalize( camPos - FragPos);
-    vec2 TexCoord = heightmapping(texCoord,viewDir);
-    //vec2 TexCoord = texCoord.xy + viewDir.xy * (texture(heightmap, texCoord.xy).r * heightscale  - heightscale / 2.0f + heightscale / 2.0f * ( - 0.0f) ); 
+    //vec2 TexCoord = heightmapping(texCoord,viewDir);
+    vec2 TexCoord =heighmappingBinarySearch(texCoord, viewDir);
     //if(texCoord.x > 1.0 || texCoord.y > 1.0 || texCoord.x < 0.0 || texCoord.y < 0.0 ) discard;
     //vec2 TexCoord = texCoord;
     vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
@@ -38,13 +38,13 @@ void main()
     float lightDistance = length(lightVec);
     float attenuation = 1.0 / (light.c + light.l * lightDistance + light.q * (lightDistance * lightDistance));
     vec3 lightDir = TBN*normalize(lightVec);
-    
-    
-    
+
+
+
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = attenuation* spec * light.specular * vec3(texture(specularmap,TexCoord));
-    
+
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = attenuation * diff * light.diffuse;
     FragColor = vec4(diffuse + attenuation* light.ambient * 0.5f + specular, 1.0f) * texture(diffusemap, TexCoord);
@@ -52,10 +52,9 @@ void main()
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     //viewdir = TBN * viewdir;
-    const float minLayers = 4.0;
+    const float minLayers = 8.0;
     const float maxLayers = 16.0;
-    float layerNum = minLayers + max(dot(viewdir, vec3(0.0,0.0,1.0)),0.0)*(maxLayers - minLayers);
-    //mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0))
+    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0));
 
     float layerDepth = 1.0 / layerNum;
     float currentDepth = 0.0;
@@ -64,7 +63,7 @@ vec2 heightmapping(vec2 texcoord, vec3 viewdir){
 
     vec2 currentTexCoord = texcoord;
     float currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
-    while(currentDepth  < currentDepthMapValue){
+    while(currentDepth < currentDepthMapValue){
         currentTexCoord -= deltaTexCoord;
         currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
         currentDepth += layerDepth;
@@ -81,3 +80,57 @@ vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     return finalTexCoord;
 
 }
+vec2 binarySearchLayer(float upperBound, vec2 deltaTexCoord,vec2 currentTexCoord, float layerDepth, float layerNum){
+
+    float difference = 1.0;
+    float betweenLayer = 0.0;
+    vec2 betweenTexCoord = vec2(0.0,0.0);
+    int counter = 0;
+    float currentDepthMapValue = 0.0;
+    //abs(difference) > 1/layerNum
+    while(counter < layerNum){
+        counter = counter + 1;
+        layerDepth = layerDepth/2 ;
+        deltaTexCoord = deltaTexCoord/2;
+        betweenLayer = upperBound + layerDepth;
+        betweenTexCoord = currentTexCoord - deltaTexCoord;
+        currentDepthMapValue = (1.0 - texture(heightmap, betweenTexCoord).r);
+        difference = currentDepthMapValue - betweenLayer;
+        if(difference > 0.0){
+            upperBound = betweenLayer;
+            currentTexCoord = betweenTexCoord;
+        }
+    }
+    vec2 texcoordPrev = currentTexCoord + deltaTexCoord;
+
+    float afterDepth = currentDepthMapValue - upperBound;
+    float beforeDepth = texture(heightmap, texcoordPrev).r - betweenLayer;
+
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoord = texcoordPrev * weight + currentTexCoord * (1.0 - weight);
+
+    return finalTexCoord;
+}
+vec2 heighmappingBinarySearch(vec2 texcoord, vec3 viewdir){
+    const float minLayers = 4.0;
+    const float maxLayers = 16.0;
+    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0));
+
+    float layerDepth = 1.0 / layerNum;
+    float currentDepth = 0.0;
+    vec2 p = viewdir.xy * heightscale;
+    vec2 deltaTexCoord = p / layerNum;
+
+    vec2 currentTexCoord = texcoord;
+    float currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
+    while(currentDepth < currentDepthMapValue){
+        currentTexCoord -= deltaTexCoord;
+        currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
+        currentDepth += layerDepth;
+    }
+
+
+
+    return binarySearchLayer(currentDepth - layerDepth, deltaTexCoord, currentTexCoord + deltaTexCoord, layerDepth, layerNum);
+}
+

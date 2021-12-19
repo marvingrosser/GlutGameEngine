@@ -29,7 +29,7 @@ void Game::loadObjs(){
     //Game::scene.addObjFromFile("src/data/objects/axes.obj","src/data/textures/scifi2/");
     Game::scene.addObjFromFile("src/data/objects/lamp.obj","src/data/textures/lava/");
     //Game::scene.addObjFromFile("src/data/objects/land.obj","src/data/textures/scifi2/");
-    Game::scene.addObjFromFile("src/data/objects/plane.obj","src/data/textures/pavement/");
+    Game::scene.addObjFromFile("src/data/objects/gang.obj","src/data/textures/scifi2/");
 };
 void Game::releaseKey(unsigned char key, int x, int y){
     Game::spieler.releaseKey(key,x,y);
@@ -50,6 +50,7 @@ void Game::init(){
     char *b = 0;
     
     glutInit(&x,  & b);//init opengl
+    glutSetOption(GLUT_MULTISAMPLE, 8);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE); //was wollen wir wie ausgeben 
    
     //glutInitWindowSize(1920, 1080); //fenstergröße
