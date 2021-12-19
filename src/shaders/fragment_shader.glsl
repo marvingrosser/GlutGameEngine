@@ -20,7 +20,7 @@ uniform sampler2D specularmap;
 uniform sampler2D normalmap; //normalmapping include
 uniform sampler2D heightmap;
 
-float heightscale = 0.1f;
+float heightscale = 0.03f;
 
 vec2 heightmapping(vec2 texcoord, vec3 viewdir);
 void main()
@@ -29,6 +29,7 @@ void main()
     //vec3 norm = normalize(Normal);
     vec3 viewDir = TBN * normalize( camPos - FragPos);
     vec2 TexCoord = heightmapping(texCoord,viewDir);
+    //vec2 TexCoord = texCoord.xy + viewDir.xy * (texture(heightmap, texCoord.xy).r * heightscale  - heightscale / 2.0f + heightscale / 2.0f * ( - 0.0f) ); 
     //if(texCoord.x > 1.0 || texCoord.y > 1.0 || texCoord.x < 0.0 || texCoord.y < 0.0 ) discard;
     //vec2 TexCoord = texCoord;
     vec3 normalMapRGB = texture(normalmap,TexCoord).rgb * 2.0f - 1.0f;
@@ -53,7 +54,8 @@ vec2 heightmapping(vec2 texcoord, vec3 viewdir){
     //viewdir = TBN * viewdir;
     const float minLayers = 4.0;
     const float maxLayers = 16.0;
-    float layerNum = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0));
+    float layerNum = minLayers + max(dot(viewdir, vec3(0.0,0.0,1.0)),0.0)*(maxLayers - minLayers);
+    //mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, -1.0), viewdir), 0.0))
 
     float layerDepth = 1.0 / layerNum;
     float currentDepth = 0.0;
@@ -62,7 +64,7 @@ vec2 heightmapping(vec2 texcoord, vec3 viewdir){
 
     vec2 currentTexCoord = texcoord;
     float currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
-    while(currentDepth < currentDepthMapValue){
+    while(currentDepth  < currentDepthMapValue){
         currentTexCoord -= deltaTexCoord;
         currentDepthMapValue = 1.0f - texture(heightmap, currentTexCoord).r;
         currentDepth += layerDepth;

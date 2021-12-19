@@ -9,8 +9,12 @@
         <group>
             <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/headers/object3d.h</file>
             <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/classes/object3d.cpp</file>
+            <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Game.cpp</file>
+            <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/headers/texture.h</file>
             <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/headers/Shader.h</file>
             <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/classes/Shader.cpp</file>
+            <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/classes/szene.cpp</file>
+            <file>file:/home/marvin/NetbeansProjects/NonEuclidian/src/classes/texture.cpp</file>
         </group>
     </open-files>
 </project-private>
